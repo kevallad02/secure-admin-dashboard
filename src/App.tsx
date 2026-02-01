@@ -6,6 +6,7 @@ import Signup from './components/Signup'
 import Dashboard from './pages/Dashboard'
 import Users from './pages/Users'
 import Logs from './pages/Logs'
+import NotFound from './pages/NotFound'
 import './App.css'
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
             }
           />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
