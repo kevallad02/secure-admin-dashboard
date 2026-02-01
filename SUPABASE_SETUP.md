@@ -53,11 +53,17 @@ You can test the edge function in Supabase Dashboard:
 
 ## 5. Environment Variables
 
-Make sure your `.env.local` has:
+Create a .env file for local development and a .env.production file for build/preview.
+Use the template in .env.example:
+
 ```
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
+
+Notes:
+- Vite embeds env values at build time. For npm run build + npm run preview, .env.production must be present before building.
+- For local dev (npm run dev), use .env.
 
 ## 6. Verify Setup
 

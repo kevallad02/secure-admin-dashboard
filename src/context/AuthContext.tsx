@@ -22,6 +22,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let isMounted = true
+    const loadingTimeout = setTimeout(() => {
+      if (isMounted) {
+        console.warn('Auth loading timed out; continuing without session.')
+        setLoading(false)
+      }
+    }, 3000)
 
     const setAuthState = async (nextSession: any | null) => {
       const nextToken = nextSession?.access_token ?? null
@@ -58,6 +64,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setAuthState(session)
+    }).catch((error) => {
+      console.error('Error fetching session:', error)
+      if (isMounted) {
+        setLoading(false)
+      }
     })
 
     // Listen for auth changes
@@ -69,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => {
       isMounted = false
+      clearTimeout(loadingTimeout)
       subscription.unsubscribe()
     }
   }, [])
