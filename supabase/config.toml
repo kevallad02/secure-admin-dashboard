@@ -1,0 +1,2 @@
+[functions.get_dashboard_stats]
+verify_jwt = false
