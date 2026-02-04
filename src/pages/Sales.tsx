@@ -517,6 +517,7 @@ export default function Sales() {
                     id: editingInvoice.id,
                     customer_id: invoiceForm.customer_id || null,
                     status: invoiceForm.status,
+                    total: editingInvoice.total || 0,
                     due_date: invoiceForm.due_date || null,
                   })
                   await salesService.updateInvoiceTotal(editingInvoice.id)

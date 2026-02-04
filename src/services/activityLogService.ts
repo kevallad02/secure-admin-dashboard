@@ -7,10 +7,10 @@ export interface ActivityLog {
   action: string
   ip_address: string
   created_at: string
-  profiles?: {
+  profiles: {
     id: string
     email: string
-  } | null
+  }[] | null
 }
 
 export const activityLogService = {
@@ -54,7 +54,7 @@ export const activityLogService = {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       const accessToken = session?.access_token
-      const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
+      const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined
 
       const { error } = await supabase.functions.invoke('log_activity', {
         body: {

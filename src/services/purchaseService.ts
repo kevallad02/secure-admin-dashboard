@@ -39,7 +39,7 @@ export interface PurchaseOrderLineWithOrg extends PurchaseOrderLine {
   purchase_orders: {
     id: string
     org_id: string
-  } | null
+  }[] | null
 }
 
 export interface PurchaseReceiptLine {

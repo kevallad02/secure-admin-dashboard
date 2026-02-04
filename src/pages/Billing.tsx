@@ -290,7 +290,7 @@ export default function Billing() {
       return {
         schedule: entry.contractId.slice(0, 8),
         customer: customerName.get(entry.customerId) || '—',
-        frequency: frequency.charAt(0).toUpperCase() + frequency.slice(1),
+        frequency: typeof frequency === 'string' ? frequency.charAt(0).toUpperCase() + frequency.slice(1) : 'Mixed',
         nextRun: nextRun ? formatShortDate(nextRun) : '—',
         amount: `$${Number(entry.amount || 0).toLocaleString()}`,
         status: (

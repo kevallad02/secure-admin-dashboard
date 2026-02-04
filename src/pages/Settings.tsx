@@ -8,7 +8,6 @@ import { customFieldsService } from '../services/customFieldsService'
 
 export default function Settings() {
   const { org } = useAuth()
-  const [loading, setLoading] = useState(true)
   const [orgDetails, setOrgDetails] = useState<any | null>(null)
   const [orgSettings, setOrgSettings] = useState<any | null>(null)
   const [taxTemplates, setTaxTemplates] = useState<any[]>([])
@@ -55,7 +54,6 @@ export default function Settings() {
   useEffect(() => {
     const load = async () => {
       if (!org?.id) return
-      setLoading(true)
       const [orgData, settingsData, taxData, memberData, fieldData] = await Promise.all([
         orgService.getOrganization(org.id),
         orgService.getOrgSettings(org.id),
@@ -88,7 +86,6 @@ export default function Settings() {
           country: settingsData.country || '',
         }))
       }
-      setLoading(false)
     }
     load()
   }, [org?.id])
@@ -137,7 +134,7 @@ export default function Settings() {
               <input
                 type="text"
                 value={companyForm.name}
-                onChange={(e) => setCompanyForm({ name: e.target.value })}
+                onChange={(e) => setCompanyForm({ ...companyForm, name: e.target.value })}
                 className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
               />
             </div>

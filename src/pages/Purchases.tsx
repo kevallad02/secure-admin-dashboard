@@ -232,7 +232,6 @@ export default function Purchases() {
 
   const vendorAging = useMemo(() => {
     const now = new Date()
-    const orderMap = new Map(orders.map((o) => [o.id, o]))
     const receiptsByPO = receipts.reduce<Record<string, number>>((acc, receipt) => {
       if (!receipt.po_id) return acc
       acc[receipt.po_id] = (acc[receipt.po_id] || 0) + Number(receipt.total || 0)

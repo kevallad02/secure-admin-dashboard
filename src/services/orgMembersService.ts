@@ -9,7 +9,7 @@ export interface OrgMember {
   profiles: {
     id: string
     email: string
-  } | null
+  }[] | null
 }
 
 export const orgMembersService = {

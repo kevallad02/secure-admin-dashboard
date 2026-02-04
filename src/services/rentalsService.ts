@@ -65,7 +65,7 @@ export interface RentalScheduleLine {
     billing_cycle: string
     start_date: string
     end_date: string | null
-  } | null
+  }[] | null
 }
 
 export const rentalsService = {

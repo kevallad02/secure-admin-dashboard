@@ -20,7 +20,6 @@ export default function Inventory() {
   const [locations, setLocations] = useState<any[]>([])
   const [units, setUnits] = useState<any[]>([])
   const [categories, setCategories] = useState<any[]>([])
-  const [transfers, setTransfers] = useState<any[]>([])
   const [selectedTransfer, setSelectedTransfer] = useState<any | null>(null)
 
   const [productModalOpen, setProductModalOpen] = useState(false)
@@ -132,7 +131,6 @@ export default function Inventory() {
         })))
       } else if (activeTab === 'transfers') {
         const data = await inventoryService.getTransfers(org.id)
-        setTransfers(data)
         setRows(data.map((item) => ({
           product: item.product_name || 'Unknown',
           from: item.from_location || '—',

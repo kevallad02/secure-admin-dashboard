@@ -3,7 +3,7 @@ import { supabase } from '../supabaseClient'
 export interface Profile {
   id: string
   email: string
-  role: 'user' | 'admin' | 'moderator'
+  role: 'user' | 'admin' | 'moderator' | 'owner'
   is_active: boolean
   created_at: string
 }

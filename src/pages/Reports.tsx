@@ -16,6 +16,12 @@ const durationOptions: Array<{ id: DurationOption; label: string; days: number }
   { id: '365d', label: 'Last 12 months', days: 365 },
 ]
 
+const formatShortDate = (date: string | null | undefined): string => {
+  if (!date) return '—'
+  const d = new Date(date)
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
 export default function Reports() {
   const { org } = useAuth()
   const [duration, setDuration] = useState<DurationOption>('30d')
