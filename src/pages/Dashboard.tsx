@@ -3,7 +3,7 @@ import { UserGroupIcon, UserIcon, UserPlusIcon, ChartBarIcon } from '@heroicons/
 import DashboardLayout from '../components/DashboardLayout'
 import { edgeFunctionService } from '../services/edgeFunctionService'
 import { activityLogService } from '../services/activityLogService'
-import { profileService } from '../services/profileService'
+import { orgMembersService } from '../services/orgMembersService'
 import { useAuth } from '../context/AuthContext'
 
 export default function Dashboard() {
@@ -17,7 +17,7 @@ export default function Dashboard() {
   const [recentLogs, setRecentLogs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const hasLoadedRef = useRef(false)
-  const { isAdmin, loading: authLoading } = useAuth()
+  const { org, isAdmin, loading: authLoading } = useAuth()
 
   useEffect(() => {
     if (authLoading) return
@@ -37,12 +37,11 @@ export default function Dashboard() {
       }
 
       // Load data based on admin status
-      if (adminStatus) {
-        // Admin can see all users and logs
-        const profiles = await profileService.getAllProfiles()
-        setRecentUsers(profiles.slice(0, 4))
+      if (adminStatus && org?.id) {
+        const { data: members } = await orgMembersService.getOrgMembersPaged(org.id, 1, 4)
+        setRecentUsers(members)
 
-        const logs = await activityLogService.getAllLogs()
+        const logs = await activityLogService.getAllLogs(org.id)
         setRecentLogs(logs.slice(0, 4))
       }
     } catch (error) {
@@ -139,13 +138,13 @@ export default function Dashboard() {
                         <div className="flex-shrink-0">
                           <div className="h-10 w-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
                             <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
-                              {user.email?.substring(0, 2).toUpperCase() || 'U'}
+                              {user.profiles?.email?.substring(0, 2).toUpperCase() || 'U'}
                             </span>
                           </div>
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                            {user.email}
+                            {user.profiles?.email || 'Unknown'}
                           </p>
                           <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
                             {user.role}
@@ -154,13 +153,9 @@ export default function Dashboard() {
                       </div>
                       <div className="text-right">
                         <span
-                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            user.is_active
-                              ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                              : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400'
-                          }`}
+                          className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
                         >
-                          {user.is_active ? 'Active' : 'Inactive'}
+                          Active
                         </span>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           {new Date(user.created_at).toLocaleDateString()}

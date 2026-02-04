@@ -3,19 +3,25 @@ import { supabase } from '../supabaseClient'
 export interface ActivityLog {
   id: string
   user_id: string
+  org_id: string | null
   action: string
   ip_address: string
   created_at: string
+  profiles?: {
+    id: string
+    email: string
+  } | null
 }
 
 export const activityLogService = {
-  async getLogsPaged(page: number, pageSize: number): Promise<{ data: ActivityLog[]; count: number }> {
+  async getLogsPaged(orgId: string, page: number, pageSize: number): Promise<{ data: ActivityLog[]; count: number }> {
     const from = (page - 1) * pageSize
     const to = from + pageSize - 1
 
     const { data, error, count } = await supabase
       .from('activity_logs')
-      .select('*', { count: 'exact' })
+      .select('id, user_id, org_id, action, ip_address, created_at, profiles ( id, email )', { count: 'exact' })
+      .eq('org_id', orgId)
       .order('created_at', { ascending: false })
       .range(from, to)
 
@@ -27,10 +33,11 @@ export const activityLogService = {
     return { data: data || [], count: count || 0 }
   },
   // Get all activity logs (admin only)
-  async getAllLogs(): Promise<ActivityLog[]> {
+  async getAllLogs(orgId: string): Promise<ActivityLog[]> {
     const { data, error } = await supabase
       .from('activity_logs')
-      .select('*')
+      .select('id, user_id, org_id, action, ip_address, created_at, profiles ( id, email )')
+      .eq('org_id', orgId)
       .order('created_at', { ascending: false })
       .limit(100)
 
@@ -43,21 +50,26 @@ export const activityLogService = {
   },
 
   // Create activity log
-  async createLog(action: string, ipAddress?: string): Promise<void> {
-    const { data: { user } } = await supabase.auth.getUser()
-    
-    if (!user) return
+  async createLog(action: string, ipAddress?: string, orgId?: string | null): Promise<void> {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const accessToken = session?.access_token
+      const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
 
-    const { error } = await supabase
-      .from('activity_logs')
-      .insert({
-        user_id: user.id,
-        action,
-        ip_address: ipAddress || 'unknown',
+      const { error } = await supabase.functions.invoke('log_activity', {
+        body: {
+          action,
+          org_id: orgId || null,
+          ip_address: ipAddress || null,
+        },
+        headers,
       })
 
-    if (error) {
-      console.error('Error creating log:', error)
+      if (error) {
+        console.error('Error creating log via function:', error)
+      }
+    } catch (error) {
+      console.error('Error invoking log_activity:', error)
     }
   },
 }

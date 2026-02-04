@@ -1,4 +1,5 @@
 import { supabase } from '../supabaseClient'
+import { activityLogService } from './activityLogService'
 
 export interface InventoryProduct {
   id: string
@@ -18,6 +19,8 @@ export interface InventoryLocation {
 
 export interface InventoryStockLevel {
   id: string
+  product_id: string
+  location_id: string
   product_name: string
   location_name: string
   qty_on_hand: number
@@ -84,6 +87,7 @@ export const inventoryService = {
       console.error('Error creating product:', error)
       return false
     }
+    await activityLogService.createLog(`Created product "${payload.name}"`)
     return true
   },
 
@@ -114,6 +118,7 @@ export const inventoryService = {
       console.error('Error updating product:', error)
       return false
     }
+    await activityLogService.createLog(`Updated product "${payload.name}"`)
     return true
   },
 
@@ -144,6 +149,7 @@ export const inventoryService = {
       console.error('Error creating location:', error)
       return false
     }
+    await activityLogService.createLog(`Created location "${payload.name}"`)
     return true
   },
 
@@ -160,6 +166,7 @@ export const inventoryService = {
       console.error('Error updating location:', error)
       return false
     }
+    await activityLogService.createLog(`Updated location "${payload.name}"`)
     return true
   },
 
@@ -176,6 +183,8 @@ export const inventoryService = {
 
     return (data || []).map((row: any) => ({
       id: `${row.product_id}-${row.location_id}`,
+      product_id: row.product_id,
+      location_id: row.location_id,
       product_name: row.products?.name || 'Unknown',
       location_name: row.locations?.name || 'Unknown',
       qty_on_hand: Number(row.qty_on_hand || 0),
@@ -367,6 +376,7 @@ export const inventoryService = {
       return false
     }
 
+    await activityLogService.createLog('Created stock transfer')
     return true
   },
 }

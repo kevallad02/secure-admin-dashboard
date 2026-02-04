@@ -1,4 +1,5 @@
 import { supabase } from '../supabaseClient'
+import { activityLogService } from './activityLogService'
 
 export interface Asset {
   id: string
@@ -47,6 +48,24 @@ export interface RentalLine {
   frequency: string
   next_charge_date: string | null
   created_at: string
+}
+
+export interface RentalScheduleLine {
+  id: string
+  contract_id: string
+  asset_id: string | null
+  rate: number
+  frequency: string
+  next_charge_date: string | null
+  created_at: string
+  rental_contracts: {
+    id: string
+    org_id: string
+    customer_id: string | null
+    billing_cycle: string
+    start_date: string
+    end_date: string | null
+  } | null
 }
 
 export const rentalsService = {
@@ -120,6 +139,20 @@ export const rentalsService = {
     return data || []
   },
 
+  async getRecurringSchedules(orgId: string): Promise<RentalScheduleLine[]> {
+    const { data, error } = await supabase
+      .from('rental_lines')
+      .select('id, contract_id, asset_id, rate, frequency, next_charge_date, created_at, rental_contracts ( id, org_id, customer_id, billing_cycle, start_date, end_date )')
+      .eq('rental_contracts.org_id', orgId)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Error fetching rental schedules:', error)
+      return []
+    }
+    return data || []
+  },
+
   async createAsset(payload: { org_id: string; product_id?: string | null; serial?: string | null; status: string; condition?: string | null }): Promise<boolean> {
     const { error } = await supabase
       .from('assets')
@@ -134,6 +167,7 @@ export const rentalsService = {
       console.error('Error creating asset:', error)
       return false
     }
+    await activityLogService.createLog('Created rental asset')
     return true
   },
 
@@ -151,6 +185,7 @@ export const rentalsService = {
       console.error('Error updating asset:', error)
       return false
     }
+    await activityLogService.createLog('Updated rental asset')
     return true
   },
 
@@ -169,6 +204,7 @@ export const rentalsService = {
       console.error('Error creating contract:', error)
       return false
     }
+    await activityLogService.createLog('Created rental contract')
     return true
   },
 
@@ -187,6 +223,7 @@ export const rentalsService = {
       console.error('Error updating contract:', error)
       return false
     }
+    await activityLogService.createLog('Updated rental contract')
     return true
   },
 
@@ -205,6 +242,7 @@ export const rentalsService = {
       console.error('Error creating rental event:', error)
       return false
     }
+    await activityLogService.createLog('Created rental event')
     return true
   },
 
@@ -217,6 +255,7 @@ export const rentalsService = {
       console.error('Error updating asset status:', error)
       return false
     }
+    await activityLogService.createLog('Updated rental asset status')
     return true
   },
 
@@ -236,6 +275,7 @@ export const rentalsService = {
       console.error('Error creating charge:', error)
       return false
     }
+    await activityLogService.createLog('Created rental charge')
     return true
   },
 
@@ -251,6 +291,7 @@ export const rentalsService = {
       console.error('Error updating charge:', error)
       return false
     }
+    await activityLogService.createLog('Updated rental charge')
     return true
   },
 
@@ -267,6 +308,7 @@ export const rentalsService = {
       console.error('Error creating rental line:', error)
       return false
     }
+    await activityLogService.createLog('Created rental line item')
     return true
   },
 
@@ -283,6 +325,7 @@ export const rentalsService = {
       console.error('Error updating rental line:', error)
       return false
     }
+    await activityLogService.createLog('Updated rental line item')
     return true
   },
 
@@ -295,6 +338,7 @@ export const rentalsService = {
       console.error('Error deleting rental line:', error)
       return false
     }
+    await activityLogService.createLog('Deleted rental line item')
     return true
   },
 

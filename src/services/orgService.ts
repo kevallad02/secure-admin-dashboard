@@ -1,4 +1,5 @@
 import { supabase } from '../supabaseClient'
+import { activityLogService } from './activityLogService'
 
 export interface OrgSummary {
   id: string
@@ -12,9 +13,57 @@ export interface OrgSettings {
   tax_rate: number
   tax_included: boolean
   country_code?: string | null
+  logo_url?: string | null
+  address_line1?: string | null
+  address_line2?: string | null
+  city?: string | null
+  state?: string | null
+  postal_code?: string | null
+  country?: string | null
 }
 
 export const orgService = {
+  async getOrganization(orgId: string): Promise<{ id: string; name: string; plan: string; created_at: string } | null> {
+    const { data, error } = await supabase
+      .from('organizations')
+      .select('id, name, plan, created_at')
+      .eq('id', orgId)
+      .single()
+
+    if (error) {
+      console.error('Error fetching organization:', error)
+      return null
+    }
+    return data
+  },
+
+  async updateOrganization(payload: { id: string; name: string }): Promise<boolean> {
+    const { error } = await supabase
+      .from('organizations')
+      .update({ name: payload.name })
+      .eq('id', payload.id)
+
+    if (error) {
+      console.error('Error updating organization:', error)
+      return false
+    }
+    await activityLogService.createLog(`Updated organization "${payload.name}"`)
+    return true
+  },
+
+  async getOrgSettings(orgId: string): Promise<OrgSettings | null> {
+    const { data, error } = await supabase
+      .from('org_settings')
+      .select('org_id, currency_code, tax_rate, tax_included, country_code, logo_url, address_line1, address_line2, city, state, postal_code, country')
+      .eq('org_id', orgId)
+      .single()
+
+    if (error) {
+      console.error('Error fetching org settings:', error)
+      return null
+    }
+    return data
+  },
   async getPrimaryOrgForUser(userId: string): Promise<OrgSummary | null> {
     const { data, error } = await supabase
       .from('org_members')
@@ -48,6 +97,13 @@ export const orgService = {
         tax_rate: settings.tax_rate,
         tax_included: settings.tax_included,
         country_code: settings.country_code || null,
+        logo_url: settings.logo_url || null,
+        address_line1: settings.address_line1 || null,
+        address_line2: settings.address_line2 || null,
+        city: settings.city || null,
+        state: settings.state || null,
+        postal_code: settings.postal_code || null,
+        country: settings.country || null,
         updated_at: new Date().toISOString(),
       }, { onConflict: 'org_id' })
 
@@ -55,6 +111,7 @@ export const orgService = {
       console.error('Error saving org settings:', error)
       return false
     }
+    await activityLogService.createLog('Updated organization settings')
     return true
   },
 
@@ -206,6 +263,7 @@ export const orgService = {
       console.error('Error creating tax template:', error)
       return false
     }
+    await activityLogService.createLog(`Created tax template "${payload.name}"`)
     return true
   },
 
@@ -232,6 +290,7 @@ export const orgService = {
       console.error('Error updating tax template:', error)
       return false
     }
+    await activityLogService.createLog(`Updated tax template "${payload.name}"`)
     return true
   },
 
@@ -245,6 +304,7 @@ export const orgService = {
       console.error('Error deleting tax template:', error)
       return false
     }
+    await activityLogService.createLog('Deleted tax template')
     return true
   },
 }

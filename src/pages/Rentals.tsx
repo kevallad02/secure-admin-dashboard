@@ -38,6 +38,8 @@ export default function Rentals() {
   const [charges, setCharges] = useState<any[]>([])
   const [customers, setCustomers] = useState<any[]>([])
   const [products, setProducts] = useState<any[]>([])
+  const [contractLines, setContractLines] = useState<any[]>([])
+  const [linesLoading, setLinesLoading] = useState(false)
 
   const [assetModalOpen, setAssetModalOpen] = useState(false)
   const [contractModalOpen, setContractModalOpen] = useState(false)
@@ -47,11 +49,17 @@ export default function Rentals() {
   const [editingAsset, setEditingAsset] = useState<any | null>(null)
   const [editingContract, setEditingContract] = useState<any | null>(null)
   const [editingCharge, setEditingCharge] = useState<any | null>(null)
+  const [editingLine, setEditingLine] = useState<any | null>(null)
 
   const [assetForm, setAssetForm] = useState({ product_id: '', serial: '', status: 'available', condition: '' })
   const [contractForm, setContractForm] = useState({ customer_id: '', start_date: '', end_date: '', billing_cycle: 'monthly', total: 0 })
   const [eventForm, setEventForm] = useState({ contract_id: '', asset_id: '', event_type: 'checkout', notes: '' })
   const [chargeForm, setChargeForm] = useState({ contract_id: '', asset_id: '', amount: 0, status: 'open', due_date: '' })
+  const [lineForm, setLineForm] = useState({ asset_id: '', rate: 0, frequency: 'monthly' })
+
+  const [chargeRunning, setChargeRunning] = useState(false)
+  const [chargeMessage, setChargeMessage] = useState('')
+  const [lastChargeRun, setLastChargeRun] = useState<string | null>(null)
 
   useEffect(() => {
     const load = async () => {
@@ -75,6 +83,58 @@ export default function Rentals() {
     }
     load()
   }, [org?.id, refreshKey])
+
+  const chargeStorageKey = useMemo(() => (org?.id ? `rentalChargeGen:${org.id}` : 'rentalChargeGen:unknown'), [org?.id])
+
+  const formatLocalDateKey = (date: Date) => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
+  const runChargeGeneration = async (mode: 'auto' | 'manual') => {
+    if (!org?.id) return
+    const today = formatLocalDateKey(new Date())
+    const lastRun = localStorage.getItem(chargeStorageKey)
+
+    if (mode === 'auto' && lastRun === today) {
+      setLastChargeRun(lastRun)
+      return
+    }
+
+    setChargeRunning(true)
+    setChargeMessage(mode === 'auto' ? 'Auto-generating charges...' : 'Generating charges...')
+    const ok = await rentalsService.generateCharges(org.id)
+    setChargeRunning(false)
+
+    if (ok) {
+      localStorage.setItem(chargeStorageKey, today)
+      setLastChargeRun(today)
+      setChargeMessage(mode === 'auto' ? 'Auto-generated charges for today.' : 'Charges generated.')
+      setRefreshKey((prev) => prev + 1)
+    } else {
+      setChargeMessage('Charge generation failed. Please try again.')
+    }
+  }
+
+  useEffect(() => {
+    if (!org?.id) return
+    const stored = localStorage.getItem(chargeStorageKey)
+    setLastChargeRun(stored)
+    void runChargeGeneration('auto')
+  }, [org?.id, chargeStorageKey])
+
+  const loadContractLines = async (contractId: string) => {
+    setLinesLoading(true)
+    const lines = await rentalsService.getLines(contractId)
+    setContractLines(lines)
+    setLinesLoading(false)
+  }
+
+  const contractLineTotal = useMemo(() => {
+    return contractLines.reduce((sum, line) => sum + Number(line.rate || 0), 0)
+  }, [contractLines])
 
   const columns = useMemo(() => {
     if (activeTab === 'rentals') {
@@ -163,6 +223,8 @@ export default function Rentals() {
             className="text-sm font-medium text-primary-600 hover:text-primary-700"
             onClick={() => {
               setEditingContract(contract)
+              setEditingLine(null)
+              setLineForm({ asset_id: '', rate: 0, frequency: 'monthly' })
               setContractForm({
                 customer_id: contract.customer_id || '',
                 start_date: contract.start_date || '',
@@ -171,6 +233,7 @@ export default function Rentals() {
                 total: Number(contract.total || 0),
               })
               setContractModalOpen(true)
+              void loadContractLines(contract.id)
             }}
           >
             Edit
@@ -225,6 +288,28 @@ export default function Rentals() {
     )
   }, [rows, search])
 
+  const assetStats = useMemo(() => {
+    const total = assets.length
+    const retired = assets.filter((asset) => asset.status === 'retired').length
+    const active = Math.max(0, total - retired)
+    const rented = assets.filter((asset) => asset.status === 'rented').length
+    const available = assets.filter((asset) => asset.status === 'available').length
+    const service = assets.filter((asset) => asset.status === 'service').length
+    const utilization = active > 0 ? rented / active : 0
+    const availability = active > 0 ? available / active : 0
+
+    return {
+      total,
+      active,
+      rented,
+      available,
+      service,
+      retired,
+      utilization,
+      availability,
+    }
+  }, [assets])
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -232,34 +317,68 @@ export default function Rentals() {
           title="Rentals"
           subtitle="Manage assets, contracts, and recurring charges."
           actions={(
-            <button
-              className="inline-flex items-center px-4 py-2 rounded-md bg-primary-600 text-white text-sm font-medium hover:bg-primary-700"
-              onClick={() => {
-                if (activeTab === 'assets') {
-                  setEditingAsset(null)
-                  setAssetForm({ product_id: '', serial: '', status: 'available', condition: '' })
-                  setAssetModalOpen(true)
-                } else if (activeTab === 'rentals') {
-                  setEditingContract(null)
-                  setContractForm({ customer_id: '', start_date: '', end_date: '', billing_cycle: 'monthly', total: 0 })
-                  setContractModalOpen(true)
-                } else if (activeTab === 'check') {
-                  setEventForm({ contract_id: '', asset_id: '', event_type: 'checkout', notes: '' })
-                  setEventModalOpen(true)
-                } else {
-                  setEditingCharge(null)
-                  setChargeForm({ contract_id: '', asset_id: '', amount: 0, status: 'open', due_date: '' })
-                  setChargeModalOpen(true)
-                }
-              }}
-            >
-              {activeTab === 'assets' && 'Add asset'}
-              {activeTab === 'rentals' && 'Create rental'}
-              {activeTab === 'check' && 'Log event'}
-              {activeTab === 'charges' && 'Add charge'}
-            </button>
+            <>
+              {activeTab === 'charges' && (
+                <button
+                  className="inline-flex items-center px-4 py-2 rounded-md border border-primary-600 text-primary-700 text-sm font-medium hover:bg-primary-50"
+                  onClick={() => void runChargeGeneration('manual')}
+                  disabled={chargeRunning}
+                >
+                  {chargeRunning ? 'Generating...' : 'Generate charges'}
+                </button>
+              )}
+              <button
+                className="inline-flex items-center px-4 py-2 rounded-md bg-primary-600 text-white text-sm font-medium hover:bg-primary-700"
+                onClick={() => {
+                  if (activeTab === 'assets') {
+                    setEditingAsset(null)
+                    setAssetForm({ product_id: '', serial: '', status: 'available', condition: '' })
+                    setAssetModalOpen(true)
+                  } else if (activeTab === 'rentals') {
+                    setEditingContract(null)
+                    setEditingLine(null)
+                    setLineForm({ asset_id: '', rate: 0, frequency: 'monthly' })
+                    setContractForm({ customer_id: '', start_date: '', end_date: '', billing_cycle: 'monthly', total: 0 })
+                    setContractLines([])
+                    setContractModalOpen(true)
+                  } else if (activeTab === 'check') {
+                    setEventForm({ contract_id: '', asset_id: '', event_type: 'checkout', notes: '' })
+                    setEventModalOpen(true)
+                  } else {
+                    setEditingCharge(null)
+                    setChargeForm({ contract_id: '', asset_id: '', amount: 0, status: 'open', due_date: '' })
+                    setChargeModalOpen(true)
+                  }
+                }}
+              >
+                {activeTab === 'assets' && 'Add asset'}
+                {activeTab === 'rentals' && 'Create rental'}
+                {activeTab === 'check' && 'Log event'}
+                {activeTab === 'charges' && 'Add charge'}
+              </button>
+            </>
           )}
         />
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { label: 'Total assets', value: assetStats.total.toLocaleString() },
+            { label: 'Available now', value: assetStats.available.toLocaleString() },
+            { label: 'Rented now', value: assetStats.rented.toLocaleString() },
+            { label: 'Utilization', value: `${(assetStats.utilization * 100).toFixed(1)}%` },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-4"
+            >
+              <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{stat.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-gray-900 dark:text-white">{stat.value}</p>
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                Active: {assetStats.active} · Service: {assetStats.service} · Retired: {assetStats.retired}
+              </p>
+            </div>
+          ))}
+        </div>
 
         <div className="flex flex-wrap gap-2">
           {tabs.map((tab) => (
@@ -286,6 +405,27 @@ export default function Rentals() {
             className="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
           />
         </div>
+
+        {activeTab === 'charges' && (
+          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-900 dark:text-white">Recurring charge schedule</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Auto-generates daily on first visit. Last run: {lastChargeRun || 'Not yet run'}
+              </p>
+              {chargeMessage && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{chargeMessage}</p>
+              )}
+            </div>
+            <button
+              className="inline-flex items-center px-3 py-2 rounded-md border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+              onClick={() => void runChargeGeneration('manual')}
+              disabled={chargeRunning}
+            >
+              {chargeRunning ? 'Generating...' : 'Run now'}
+            </button>
+          </div>
+        )}
 
         <DataTable
           columns={columns}
@@ -410,7 +550,7 @@ export default function Rentals() {
                     start_date: contractForm.start_date,
                     end_date: contractForm.end_date || null,
                     billing_cycle: contractForm.billing_cycle,
-                    total: Number(contractForm.total),
+                    total: Number(contractLineTotal || contractForm.total),
                   })
                 } else {
                   await rentalsService.createContract({
@@ -484,12 +624,163 @@ export default function Rentals() {
               <input
                 type="number"
                 min="0"
-                value={contractForm.total}
+                value={editingContract ? contractLineTotal : contractForm.total}
                 onChange={(e) => setContractForm({ ...contractForm, total: Number(e.target.value) })}
+                disabled={Boolean(editingContract)}
                 className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
               />
+              {editingContract && (
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Auto-calculated from line items.</p>
+              )}
             </div>
           </div>
+        </div>
+
+        <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Line items</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Assets + rates that drive recurring charges.</p>
+            </div>
+            {!editingContract && (
+              <span className="text-xs text-gray-500 dark:text-gray-400">Save contract to add items.</span>
+            )}
+          </div>
+
+          {editingContract && (
+            <div className="mt-4 space-y-3">
+              {linesLoading ? (
+                <p className="text-xs text-gray-500 dark:text-gray-400">Loading line items...</p>
+              ) : contractLines.length === 0 ? (
+                <p className="text-xs text-gray-500 dark:text-gray-400">No line items yet.</p>
+              ) : (
+                <div className="space-y-2">
+                  {contractLines.map((line) => {
+                    const asset = assets.find((item) => item.id === line.asset_id)
+                    const assetLabel = asset?.serial || line.asset_id?.slice(0, 8) || 'Unassigned'
+                    return (
+                      <div key={line.id} className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200 dark:border-gray-700 px-3 py-2">
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">{assetLabel}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            ${Number(line.rate || 0).toLocaleString()} · {line.frequency}
+                            {line.next_charge_date ? ` · Next ${new Date(line.next_charge_date).toLocaleDateString()}` : ''}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3 text-sm">
+                          <button
+                            className="text-primary-600 hover:text-primary-700"
+                            onClick={() => {
+                              setEditingLine(line)
+                              setLineForm({
+                                asset_id: line.asset_id || '',
+                                rate: Number(line.rate || 0),
+                                frequency: line.frequency || 'monthly',
+                              })
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="text-red-500 hover:text-red-600"
+                            onClick={async () => {
+                              await rentalsService.deleteLine(line.id)
+                              await rentalsService.updateContractTotal(editingContract.id)
+                              await loadContractLines(editingContract.id)
+                              setRefreshKey((prev) => prev + 1)
+                            }}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-300">Asset</label>
+                  <select
+                    value={lineForm.asset_id}
+                    onChange={(e) => setLineForm({ ...lineForm, asset_id: e.target.value })}
+                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  >
+                    <option value="">Select asset</option>
+                    {assets.map((asset) => (
+                      <option key={asset.id} value={asset.id}>
+                        {asset.serial || asset.id.slice(0, 8)} ({asset.status})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-300">Rate</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={lineForm.rate}
+                    onChange={(e) => setLineForm({ ...lineForm, rate: Number(e.target.value) })}
+                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-300">Frequency</label>
+                  <select
+                    value={lineForm.frequency}
+                    onChange={(e) => setLineForm({ ...lineForm, frequency: e.target.value })}
+                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  >
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  className="inline-flex items-center px-3 py-2 rounded-md bg-primary-600 text-white text-xs font-medium hover:bg-primary-700"
+                  onClick={async () => {
+                    if (!editingContract) return
+                    if (editingLine) {
+                      await rentalsService.updateLine({
+                        id: editingLine.id,
+                        asset_id: lineForm.asset_id || null,
+                        rate: Number(lineForm.rate),
+                        frequency: lineForm.frequency,
+                      })
+                    } else {
+                      await rentalsService.createLine({
+                        contract_id: editingContract.id,
+                        asset_id: lineForm.asset_id || null,
+                        rate: Number(lineForm.rate),
+                        frequency: lineForm.frequency,
+                      })
+                    }
+                    await rentalsService.updateContractTotal(editingContract.id)
+                    await loadContractLines(editingContract.id)
+                    setRefreshKey((prev) => prev + 1)
+                    setEditingLine(null)
+                    setLineForm({ asset_id: '', rate: 0, frequency: 'monthly' })
+                  }}
+                >
+                  {editingLine ? 'Update line' : 'Add line'}
+                </button>
+                {editingLine && (
+                  <button
+                    className="text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                    onClick={() => {
+                      setEditingLine(null)
+                      setLineForm({ asset_id: '', rate: 0, frequency: 'monthly' })
+                    }}
+                  >
+                    Cancel edit
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </Modal>
 

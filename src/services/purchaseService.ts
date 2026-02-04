@@ -1,4 +1,5 @@
 import { supabase } from '../supabaseClient'
+import { activityLogService } from './activityLogService'
 
 export interface Vendor {
   id: string
@@ -32,6 +33,13 @@ export interface PurchaseOrderLine {
   qty: number
   unit_cost: number
   created_at: string
+}
+
+export interface PurchaseOrderLineWithOrg extends PurchaseOrderLine {
+  purchase_orders: {
+    id: string
+    org_id: string
+  } | null
 }
 
 export interface PurchaseReceiptLine {
@@ -100,6 +108,20 @@ export const purchaseService = {
     return data || []
   },
 
+  async getPurchaseOrderLinesForOrg(orgId: string): Promise<PurchaseOrderLineWithOrg[]> {
+    const { data, error } = await supabase
+      .from('purchase_order_lines')
+      .select('id, po_id, product_id, qty, unit_cost, created_at, purchase_orders ( id, org_id )')
+      .eq('purchase_orders.org_id', orgId)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Error fetching org PO lines:', error)
+      return []
+    }
+    return data || []
+  },
+
   async getReceiptLines(receiptId: string): Promise<PurchaseReceiptLine[]> {
     const { data, error } = await supabase
       .from('purchase_receipt_lines')
@@ -126,6 +148,7 @@ export const purchaseService = {
       console.error('Error creating vendor:', error)
       return false
     }
+    await activityLogService.createLog(`Created vendor "${payload.name}"`)
     return true
   },
 
@@ -141,6 +164,7 @@ export const purchaseService = {
       console.error('Error updating vendor:', error)
       return false
     }
+    await activityLogService.createLog(`Updated vendor "${payload.name}"`)
     return true
   },
 
@@ -158,6 +182,7 @@ export const purchaseService = {
       console.error('Error creating purchase order:', error)
       return false
     }
+    await activityLogService.createLog('Created purchase order')
     return true
   },
 
@@ -175,6 +200,7 @@ export const purchaseService = {
       console.error('Error updating purchase order:', error)
       return false
     }
+    await activityLogService.createLog('Updated purchase order')
     return true
   },
 
@@ -192,6 +218,7 @@ export const purchaseService = {
       console.error('Error creating receipt:', error)
       return false
     }
+    await activityLogService.createLog('Created purchase receipt')
     return true
   },
 
@@ -209,6 +236,7 @@ export const purchaseService = {
       console.error('Error updating receipt:', error)
       return false
     }
+    await activityLogService.createLog('Updated purchase receipt')
     return true
   },
 
@@ -225,6 +253,7 @@ export const purchaseService = {
       console.error('Error creating PO line:', error)
       return false
     }
+    await activityLogService.createLog('Created purchase order line')
     return true
   },
 
@@ -241,6 +270,7 @@ export const purchaseService = {
       console.error('Error updating PO line:', error)
       return false
     }
+    await activityLogService.createLog('Updated purchase order line')
     return true
   },
 
@@ -253,6 +283,7 @@ export const purchaseService = {
       console.error('Error deleting PO line:', error)
       return false
     }
+    await activityLogService.createLog('Deleted purchase order line')
     return true
   },
 
@@ -269,6 +300,7 @@ export const purchaseService = {
       console.error('Error creating receipt line:', error)
       return false
     }
+    await activityLogService.createLog('Created purchase receipt line')
     return true
   },
 
@@ -285,6 +317,7 @@ export const purchaseService = {
       console.error('Error updating receipt line:', error)
       return false
     }
+    await activityLogService.createLog('Updated purchase receipt line')
     return true
   },
 
@@ -297,6 +330,7 @@ export const purchaseService = {
       console.error('Error deleting receipt line:', error)
       return false
     }
+    await activityLogService.createLog('Deleted purchase receipt line')
     return true
   },
 

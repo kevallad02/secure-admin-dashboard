@@ -1,20 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
 import { MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline'
-import { profileService, type Profile } from '../services/profileService'
+import { orgMembersService, type OrgMember } from '../services/orgMembersService'
 import { useAuth } from '../context/AuthContext'
 
 export default function Users() {
-  const [users, setUsers] = useState<Profile[]>([])
+  const [users, setUsers] = useState<OrgMember[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [roleFilter, setRoleFilter] = useState('all')
-  const [statusFilter, setStatusFilter] = useState('all')
   const [page, setPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
   const pageSize = 10
   const hasLoadedRef = useRef(false)
-  const { isAdmin, isOwner, loading: authLoading } = useAuth()
+  const { org, isAdmin, isOwner, loading: authLoading } = useAuth()
 
   useEffect(() => {
     if (authLoading) return
@@ -26,8 +25,8 @@ export default function Users() {
   const loadUsers = async (adminStatus: boolean) => {
     try {
       setLoading(true)
-      if (adminStatus) {
-        const { data, count } = await profileService.getProfilesPaged(page, pageSize)
+      if (adminStatus && org?.id) {
+        const { data, count } = await orgMembersService.getOrgMembersPaged(org.id, page, pageSize)
         setUsers(data)
         setTotalCount(count)
       }
@@ -41,26 +40,21 @@ export default function Users() {
   const filteredUsers = users.filter((user) => {
     const term = search.trim().toLowerCase()
     const matchesSearch = term
-      ? (user.email || '').toLowerCase().includes(term) || user.id.toLowerCase().includes(term)
+      ? (user.profiles?.email || '').toLowerCase().includes(term) || user.user_id.toLowerCase().includes(term)
       : true
     const matchesRole = roleFilter === 'all' ? true : user.role === roleFilter
-    const matchesStatus = statusFilter === 'all'
-      ? true
-      : statusFilter === 'active'
-        ? user.is_active
-        : !user.is_active
-    return matchesSearch && matchesRole && matchesStatus
+    return matchesSearch && matchesRole
   })
 
   useEffect(() => {
     setPage(1)
-  }, [search, roleFilter, statusFilter])
+  }, [search, roleFilter])
 
   useEffect(() => {
     if (authLoading) return
     if (!isAdmin && !isOwner) return
     loadUsers(true)
-  }, [page, authLoading, isAdmin, isOwner])
+  }, [page, authLoading, isAdmin, isOwner, org?.id])
 
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))
   const currentPage = Math.min(page, totalPages)
@@ -119,16 +113,8 @@ export default function Users() {
               <option value="all">All roles</option>
               <option value="owner">Owner</option>
               <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </select>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-            >
-              <option value="all">All status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="manager">Manager</option>
+              <option value="member">Member</option>
             </select>
             <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
               <FunnelIcon className="h-5 w-5 mr-2" />
@@ -174,22 +160,22 @@ export default function Users() {
                     </td>
                   </tr>
                 ) : pagedUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                  <tr key={`${user.org_id}-${user.user_id}`} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
                           <div className="h-10 w-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
                             <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
-                              {user.email?.substring(0, 2).toUpperCase() || 'U'}
+                              {user.profiles?.email?.substring(0, 2).toUpperCase() || 'U'}
                             </span>
                           </div>
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900 dark:text-white">
-                            {user.email}
+                            {user.profiles?.email || 'Unknown'}
                           </div>
                           <div className="text-sm text-gray-500 dark:text-gray-400">
-                            ID: {user.id.substring(0, 8)}
+                            ID: {user.user_id.substring(0, 8)}
                           </div>
                         </div>
                       </div>
@@ -201,13 +187,9 @@ export default function Users() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          user.is_active
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                            : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400'
-                        }`}
+                        className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
                       >
-                        {user.is_active ? 'Active' : 'Inactive'}
+                        Active
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">

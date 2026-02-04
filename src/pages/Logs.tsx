@@ -14,7 +14,7 @@ export default function Logs() {
   const [toast, setToast] = useState<string | null>(null)
   const pageSize = 10
   const hasLoadedRef = useRef(false)
-  const { isAdmin, isOwner, loading: authLoading } = useAuth()
+  const { org, isAdmin, isOwner, loading: authLoading } = useAuth()
 
   useEffect(() => {
     if (authLoading) return
@@ -26,8 +26,8 @@ export default function Logs() {
   const loadLogs = async (adminStatus: boolean) => {
     try {
       setLoading(true)
-      if (adminStatus) {
-        const { data, count } = await activityLogService.getLogsPaged(page, pageSize)
+      if (adminStatus && org?.id) {
+        const { data, count } = await activityLogService.getLogsPaged(org.id, page, pageSize)
         setLogs(data)
         setTotalCount(count)
       }
@@ -66,7 +66,7 @@ export default function Logs() {
     const headers = ['Action', 'User', 'IP Address', 'Timestamp']
     const rows = filteredLogs.map((log) => [
       log.action,
-      log.user_id,
+      log.profiles?.email || log.user_id,
       log.ip_address,
       new Date(log.created_at).toISOString(),
     ])
@@ -99,7 +99,7 @@ export default function Logs() {
     if (authLoading) return
     if (!isAdmin && !isOwner) return
     loadLogs(true)
-  }, [page, authLoading, isAdmin, isOwner])
+  }, [page, authLoading, isAdmin, isOwner, org?.id])
 
   if (loading) {
     return (
@@ -236,7 +236,9 @@ export default function Logs() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">{log.user_id.substring(0, 8)}...</div>
+                      <div className="text-sm text-gray-900 dark:text-white">
+                        {log.profiles?.email || `${log.user_id.substring(0, 8)}...`}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-500 dark:text-gray-400 font-mono">
@@ -253,7 +255,7 @@ export default function Logs() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
-                        User ID: {log.user_id.substring(0, 8)}
+                        User: {log.profiles?.email || log.user_id.substring(0, 8)}
                       </div>
                     </td>
                   </tr>

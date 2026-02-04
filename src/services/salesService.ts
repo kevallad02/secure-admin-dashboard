@@ -1,4 +1,5 @@
 import { supabase } from '../supabaseClient'
+import { activityLogService } from './activityLogService'
 
 export interface Customer {
   id: string
@@ -126,6 +127,7 @@ export const salesService = {
       console.error('Error creating customer:', error)
       return false
     }
+    await activityLogService.createLog(`Created customer "${payload.name}"`)
     return true
   },
 
@@ -141,6 +143,7 @@ export const salesService = {
       console.error('Error updating customer:', error)
       return false
     }
+    await activityLogService.createLog(`Updated customer "${payload.name}"`)
     return true
   },
 
@@ -157,6 +160,7 @@ export const salesService = {
       console.error('Error creating order:', error)
       return false
     }
+    await activityLogService.createLog('Created sales order')
     return true
   },
 
@@ -173,6 +177,7 @@ export const salesService = {
       console.error('Error updating order:', error)
       return false
     }
+    await activityLogService.createLog('Updated sales order')
     return true
   },
 
@@ -190,7 +195,29 @@ export const salesService = {
       console.error('Error creating invoice:', error)
       return false
     }
+    await activityLogService.createLog('Created invoice')
     return true
+  },
+
+  async createInvoiceAndReturnId(payload: { org_id: string; customer_id?: string | null; status: string; total: number; due_date?: string | null }): Promise<string | null> {
+    const { data, error } = await supabase
+      .from('invoices')
+      .insert({
+        org_id: payload.org_id,
+        customer_id: payload.customer_id || null,
+        status: payload.status,
+        total: payload.total,
+        due_date: payload.due_date || null,
+      })
+      .select('id')
+      .single()
+
+    if (error) {
+      console.error('Error creating invoice:', error)
+      return null
+    }
+    await activityLogService.createLog('Created invoice')
+    return data?.id || null
   },
 
   async updateInvoice(payload: { id: string; customer_id?: string | null; status: string; total: number; due_date?: string | null }): Promise<boolean> {
@@ -207,6 +234,7 @@ export const salesService = {
       console.error('Error updating invoice:', error)
       return false
     }
+    await activityLogService.createLog('Updated invoice')
     return true
   },
 
@@ -225,6 +253,7 @@ export const salesService = {
       console.error('Error creating payment:', error)
       return false
     }
+    await activityLogService.createLog('Created payment')
     return true
   },
 
@@ -243,6 +272,7 @@ export const salesService = {
       console.error('Error updating payment:', error)
       return false
     }
+    await activityLogService.createLog('Updated payment')
     return true
   },
 
@@ -255,6 +285,7 @@ export const salesService = {
       console.error('Error deleting payment:', error)
       return false
     }
+    await activityLogService.createLog('Deleted payment')
     return true
   },
 
@@ -271,6 +302,7 @@ export const salesService = {
       console.error('Error creating invoice line:', error)
       return false
     }
+    await activityLogService.createLog('Created invoice line')
     return true
   },
 
@@ -287,6 +319,7 @@ export const salesService = {
       console.error('Error updating invoice line:', error)
       return false
     }
+    await activityLogService.createLog('Updated invoice line')
     return true
   },
 
@@ -299,6 +332,7 @@ export const salesService = {
       console.error('Error deleting invoice line:', error)
       return false
     }
+    await activityLogService.createLog('Deleted invoice line')
     return true
   },
 
