@@ -15,10 +15,10 @@ const tabs = [
 ]
 
 const statusClasses: Record<string, string> = {
-  paid: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-  open: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-  overdue: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-  draft: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+  paid: 'bg-green-100 text-green-800  ',
+  open: 'bg-yellow-100 text-yellow-800  ',
+  overdue: 'bg-red-100 text-red-800  ',
+  draft: 'bg-gray-100 text-gray-800  ',
 }
 
 export default function Sales() {
@@ -157,7 +157,7 @@ export default function Sales() {
         order: order.id.slice(0, 8),
         customer: mapCustomerName.get(order.customer_id) || '—',
         status: (
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusClasses[order.status] || statusClasses.draft}`}>
+          <span className={`badge ${statusClasses[order.status] || statusClasses.draft}`}>
             {order.status}
           </span>
         ),
@@ -200,7 +200,7 @@ export default function Sales() {
           invoice: invoice.id.slice(0, 8),
           customer: mapCustomerName.get(invoice.customer_id) || '—',
           status: (
-            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusClasses[status] || statusClasses.open}`}>
+            <span className={`badge ${statusClasses[status] || statusClasses.open}`}>
               {status}
             </span>
           ),
@@ -320,7 +320,7 @@ export default function Sales() {
               className={`px-3 py-2 rounded-md text-sm font-medium border ${
                 activeTab === tab.id
                   ? 'bg-primary-600 text-white border-primary-600'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700'
+                  : 'bg-white  text-gray-700  border-gray-200 '
               }`}
             >
               {tab.label}
@@ -334,7 +334,7 @@ export default function Sales() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search..."
-            className="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+            className="w-full sm:w-64 rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
           />
         </div>
 
@@ -355,7 +355,7 @@ export default function Sales() {
           <>
             <button
               onClick={() => setCustomerModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -387,30 +387,30 @@ export default function Sales() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+            <label className="block text-sm font-medium text-gray-700 ">Name</label>
             <input
               type="text"
               value={customerForm.name}
               onChange={(e) => setCustomerForm({ ...customerForm, name: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <label className="block text-sm font-medium text-gray-700 ">Email</label>
             <input
               type="email"
               value={customerForm.email}
               onChange={(e) => setCustomerForm({ ...customerForm, email: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone</label>
+            <label className="block text-sm font-medium text-gray-700 ">Phone</label>
             <input
               type="text"
               value={customerForm.phone}
               onChange={(e) => setCustomerForm({ ...customerForm, phone: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
         </div>
@@ -424,7 +424,7 @@ export default function Sales() {
           <>
             <button
               onClick={() => setOrderModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -458,11 +458,11 @@ export default function Sales() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 ">Customer</label>
             <select
               value={orderForm.customer_id}
               onChange={(e) => setOrderForm({ ...orderForm, customer_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select customer</option>
               {customers.map((customer) => (
@@ -472,11 +472,11 @@ export default function Sales() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+              <label className="block text-sm font-medium text-gray-700 ">Status</label>
               <select
                 value={orderForm.status}
                 onChange={(e) => setOrderForm({ ...orderForm, status: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               >
                 <option value="draft">Draft</option>
                 <option value="open">Open</option>
@@ -484,13 +484,13 @@ export default function Sales() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Total</label>
+              <label className="block text-sm font-medium text-gray-700 ">Total</label>
               <input
                 type="number"
                 min="0"
                 value={orderForm.total}
                 onChange={(e) => setOrderForm({ ...orderForm, total: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
           </div>
@@ -505,7 +505,7 @@ export default function Sales() {
           <>
             <button
               onClick={() => setInvoiceModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -542,11 +542,11 @@ export default function Sales() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 ">Customer</label>
             <select
               value={invoiceForm.customer_id}
               onChange={(e) => setInvoiceForm({ ...invoiceForm, customer_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select customer</option>
               {customers.map((customer) => (
@@ -556,30 +556,30 @@ export default function Sales() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+              <label className="block text-sm font-medium text-gray-700 ">Status</label>
               <select
                 value={invoiceForm.status}
                 onChange={(e) => setInvoiceForm({ ...invoiceForm, status: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               >
                 <option value="draft">Draft</option>
                 <option value="open">Open</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Total (auto)</label>
-              <div className="mt-1 w-full rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white">
+              <label className="block text-sm font-medium text-gray-700 ">Total (auto)</label>
+              <div className="mt-1 w-full rounded-md border border-gray-200  bg-gray-50  px-3 py-2 text-sm text-gray-900 ">
                 {editingInvoice ? `$${Number(editingInvoice.total || 0).toLocaleString()}` : '$0'}
               </div>
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Due date</label>
+            <label className="block text-sm font-medium text-gray-700 ">Due date</label>
             <input
               type="date"
               value={invoiceForm.due_date}
               onChange={(e) => setInvoiceForm({ ...invoiceForm, due_date: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
         </div>
@@ -593,7 +593,7 @@ export default function Sales() {
           <>
             <button
               onClick={() => setPaymentModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -631,11 +631,11 @@ export default function Sales() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Invoice</label>
+            <label className="block text-sm font-medium text-gray-700 ">Invoice</label>
             <select
               value={paymentForm.invoice_id}
               onChange={(e) => setPaymentForm({ ...paymentForm, invoice_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select invoice</option>
               {invoices.map((invoice) => (
@@ -645,21 +645,21 @@ export default function Sales() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Amount</label>
+              <label className="block text-sm font-medium text-gray-700 ">Amount</label>
               <input
                 type="number"
                 min="0"
                 value={paymentForm.amount}
                 onChange={(e) => setPaymentForm({ ...paymentForm, amount: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Method</label>
+              <label className="block text-sm font-medium text-gray-700 ">Method</label>
               <select
                 value={paymentForm.method}
                 onChange={(e) => setPaymentForm({ ...paymentForm, method: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               >
                 <option value="cash">Cash</option>
                 <option value="card">Card</option>
@@ -668,21 +668,21 @@ export default function Sales() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Paid at</label>
+            <label className="block text-sm font-medium text-gray-700 ">Paid at</label>
             <input
               type="datetime-local"
               value={paymentForm.paid_at}
               onChange={(e) => setPaymentForm({ ...paymentForm, paid_at: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
+            <label className="block text-sm font-medium text-gray-700 ">Notes</label>
             <input
               type="text"
               value={paymentForm.notes}
               onChange={(e) => setPaymentForm({ ...paymentForm, notes: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
         </div>
@@ -703,16 +703,16 @@ export default function Sales() {
       >
         {selectedInvoice ? (
           <div className="space-y-4">
-            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center justify-between text-sm text-gray-600 ">
               <span>Invoice #{selectedInvoice.id.slice(0, 8)}</span>
               <span>Total: ${Number(selectedInvoice.total || 0).toLocaleString()}</span>
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">
+            <div className="text-sm text-gray-600 ">
               Customer: {customers.find((c) => c.id === selectedInvoice.customer_id)?.name || '—'}
             </div>
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200">Line Items</h4>
+                <h4 className="text-sm font-semibold text-gray-700 ">Line Items</h4>
                 <button
                   className="text-sm font-medium text-primary-600 hover:text-primary-700"
                   onClick={() => {
@@ -726,7 +726,7 @@ export default function Sales() {
                 </button>
               </div>
               {invoiceLines.length === 0 ? (
-                <p className="text-sm text-gray-500 dark:text-gray-400">No line items.</p>
+                <p className="text-sm text-gray-500 ">No line items.</p>
               ) : (
                 <div className="space-y-2">
                   {invoiceLines.map((line) => (
@@ -769,9 +769,9 @@ export default function Sales() {
               )}
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Payments</h4>
+              <h4 className="text-sm font-semibold text-gray-700  mb-2">Payments</h4>
               {payments.filter((p) => p.invoice_id === selectedInvoice.id).length === 0 ? (
-                <p className="text-sm text-gray-500 dark:text-gray-400">No payments recorded.</p>
+                <p className="text-sm text-gray-500 ">No payments recorded.</p>
               ) : (
                 <div className="space-y-2">
                   {payments.filter((p) => p.invoice_id === selectedInvoice.id).map((payment) => (
@@ -807,7 +807,7 @@ export default function Sales() {
             </div>
           </div>
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">No invoice selected.</p>
+          <p className="text-sm text-gray-500 ">No invoice selected.</p>
         )}
       </Modal>
 
@@ -819,7 +819,7 @@ export default function Sales() {
           <>
             <button
               onClick={() => setLineModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -856,16 +856,16 @@ export default function Sales() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Product</label>
+            <label className="block text-sm font-medium text-gray-700 ">Product</label>
             <input
               type="text"
               value={productQuery}
               onChange={(e) => setProductQuery(e.target.value)}
               placeholder="Search products..."
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
             {productQuery.trim() && (
-              <div className="mt-2 max-h-40 overflow-auto rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+              <div className="mt-2 max-h-40 overflow-auto rounded-md border border-gray-200  bg-white ">
                 {products
                   .filter((product) => product.name.toLowerCase().includes(productQuery.toLowerCase()))
                   .slice(0, 8)
@@ -877,7 +877,7 @@ export default function Sales() {
                         setLineForm({ ...lineForm, product_id: product.id })
                         setProductQuery(product.name)
                       }}
-                      className="w-full text-left px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="w-full text-left px-3 py-2 text-sm text-gray-800  hover:bg-gray-100 "
                     >
                       {product.name}
                     </button>
@@ -887,23 +887,23 @@ export default function Sales() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Quantity</label>
+              <label className="block text-sm font-medium text-gray-700 ">Quantity</label>
               <input
                 type="number"
                 min="1"
                 value={lineForm.qty}
                 onChange={(e) => setLineForm({ ...lineForm, qty: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Unit price</label>
+              <label className="block text-sm font-medium text-gray-700 ">Unit price</label>
               <input
                 type="number"
                 min="0"
                 value={lineForm.unit_price}
                 onChange={(e) => setLineForm({ ...lineForm, unit_price: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
           </div>
@@ -918,7 +918,7 @@ export default function Sales() {
           <>
             <button
               onClick={() => setRefundTarget(null)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -952,31 +952,31 @@ export default function Sales() {
         )}
       >
         <div className="space-y-3">
-          <p className="text-sm text-gray-600 dark:text-gray-300">
+          <p className="text-sm text-gray-600 ">
             This will record a negative payment to reflect the refund.
           </p>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Refund amount</label>
+            <label className="block text-sm font-medium text-gray-700 ">Refund amount</label>
             <input
               type="number"
               min="0"
               value={refundAmount}
               onChange={(e) => setRefundAmount(Number(e.target.value))}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Refund reason</label>
+            <label className="block text-sm font-medium text-gray-700 ">Refund reason</label>
             <input
               type="text"
               value={refundReason}
               onChange={(e) => setRefundReason(e.target.value)}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
           {refundError && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-3">
-              <p className="text-sm text-red-800 dark:text-red-200">{refundError}</p>
+            <div className="rounded-md bg-red-50  p-3">
+              <p className="text-sm text-red-800 ">{refundError}</p>
             </div>
           )}
         </div>

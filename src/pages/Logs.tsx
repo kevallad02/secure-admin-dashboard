@@ -106,7 +106,7 @@ export default function Logs() {
       <DashboardLayout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 ">
               Loading logs...
             </p>
           </div>
@@ -120,13 +120,13 @@ export default function Logs() {
       <DashboardLayout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-2xl font-bold text-gray-900  mb-2">
               Access Restricted
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 ">
               Admin access required to view activity logs.
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+            <p className="text-xs text-gray-500  mt-2">
               Current access level: User. Contact an administrator to upgrade your role.
             </p>
           </div>
@@ -139,15 +139,15 @@ export default function Logs() {
     <DashboardLayout>
       <div className="space-y-6">
         {toast && (
-          <div className="rounded-md bg-green-50 dark:bg-green-900/20 p-3 text-sm text-green-800 dark:text-green-200">
+          <div className="rounded-md bg-green-50  p-3 text-sm text-green-800 ">
             {toast}
           </div>
         )}
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Activity Logs</h1>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <h1 className="text-2xl font-bold text-gray-900 ">Activity Logs</h1>
+            <p className="mt-1 text-sm text-gray-500 ">
               View and monitor all system activities
             </p>
           </div>
@@ -160,7 +160,7 @@ export default function Logs() {
         </div>
 
         {/* Filters */}
-        <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+        <div className="app-shell shadow rounded-lg border border-gray-200  p-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1 relative">
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -169,20 +169,20 @@ export default function Logs() {
                 placeholder="Search logs..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300  rounded-lg bg-white  text-gray-900  placeholder-gray-500  focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="px-4 py-2 border border-gray-300  rounded-lg bg-white  text-gray-900  focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <option value="all">All Status</option>
               <option value="success">Success</option>
               <option value="error">Error</option>
               <option value="info">Info</option>
             </select>
-            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center text-sm text-gray-500 ">
               <FunnelIcon className="h-5 w-5 mr-2" />
               {filteredLogs.length} results
             </div>
@@ -190,71 +190,71 @@ export default function Logs() {
         </div>
 
         {/* Logs Table */}
-        <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="app-shell shadow rounded-lg border border-gray-200  overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-900">
+            <table className="min-w-full divide-y divide-gray-200 ">
+              <thead className="bg-gray-50 ">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                     Action
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                     User
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                     IP Address
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                     Timestamp
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                     Details
                   </th>
                 </tr>
               </thead>
-              <tbody className="app-shell divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="app-shell divide-y divide-gray-200 ">
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                    <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500 ">
                       Loading logs...
                     </td>
                   </tr>
                 ) : filteredLogs.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                    <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500 ">
                       No activity logs found
                     </td>
                   </tr>
                 ) : pagedLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                  <tr key={log.id} className="hover:bg-gray-50  transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="text-sm font-medium text-gray-900 ">
                         {log.action}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">
+                      <div className="text-sm text-gray-900 ">
                         {log.profiles?.[0]?.email || `${log.user_id.substring(0, 8)}...`}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500 dark:text-gray-400 font-mono">
+                      <div className="text-sm text-gray-500  font-mono">
                         {log.ip_address}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800  ">
                         Info
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">
                       {new Date(log.created_at).toLocaleString()}
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
+                      <div className="text-sm text-gray-500  max-w-xs truncate">
                         User: {log.profiles?.[0]?.email || log.user_id.substring(0, 8)}
                       </div>
                     </td>
@@ -265,20 +265,20 @@ export default function Logs() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center justify-between text-sm text-gray-500 ">
           <div>
             Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} results
           </div>
           <div className="flex items-center gap-2">
             <button
-              className="px-2 py-1 rounded border border-gray-200 dark:border-gray-700 disabled:opacity-50"
+              className="px-2 py-1 rounded border border-gray-200  disabled:opacity-50"
               onClick={() => setPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
             >
               Prev
             </button>
             <button
-              className="px-2 py-1 rounded border border-gray-200 dark:border-gray-700 disabled:opacity-50"
+              className="px-2 py-1 rounded border border-gray-200  disabled:opacity-50"
               onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
             >

@@ -105,13 +105,13 @@ export default function Settings() {
         />
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6 space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Company Info</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Business details and plan metadata.</p>
+              <h2 className="text-lg font-semibold text-gray-900 ">Company Info</h2>
+              <p className="text-sm text-gray-500 ">Business details and plan metadata.</p>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-              <div className="h-16 w-16 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex items-center justify-center overflow-hidden">
+              <div className="h-16 w-16 rounded-lg border border-gray-200  bg-gray-50  flex items-center justify-center overflow-hidden">
                 {companyForm.logo_url ? (
                   <img src={companyForm.logo_url} alt="Company logo" className="h-full w-full object-cover" />
                 ) : (
@@ -119,89 +119,89 @@ export default function Settings() {
                 )}
               </div>
               <div className="flex-1 min-w-[220px]">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Logo URL</label>
+                <label className="block text-sm font-medium text-gray-700 ">Logo URL</label>
                 <input
                   type="text"
                   value={companyForm.logo_url}
                   onChange={(e) => setCompanyForm({ ...companyForm, logo_url: e.target.value })}
                   placeholder="https://..."
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Organization name</label>
+              <label className="block text-sm font-medium text-gray-700 ">Organization name</label>
               <input
                 type="text"
                 value={companyForm.name}
                 onChange={(e) => setCompanyForm({ ...companyForm, name: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Address line 1</label>
+                <label className="block text-sm font-medium text-gray-700 ">Address line 1</label>
                 <input
                   type="text"
                   value={companyForm.address_line1}
                   onChange={(e) => setCompanyForm({ ...companyForm, address_line1: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 />
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Address line 2</label>
+                <label className="block text-sm font-medium text-gray-700 ">Address line 2</label>
                 <input
                   type="text"
                   value={companyForm.address_line2}
                   onChange={(e) => setCompanyForm({ ...companyForm, address_line2: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
+                <label className="block text-sm font-medium text-gray-700 ">City</label>
                 <input
                   type="text"
                   value={companyForm.city}
                   onChange={(e) => setCompanyForm({ ...companyForm, city: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">State / Province</label>
+                <label className="block text-sm font-medium text-gray-700 ">State / Province</label>
                 <input
                   type="text"
                   value={companyForm.state}
                   onChange={(e) => setCompanyForm({ ...companyForm, state: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Postal code</label>
+                <label className="block text-sm font-medium text-gray-700 ">Postal code</label>
                 <input
                   type="text"
                   value={companyForm.postal_code}
                   onChange={(e) => setCompanyForm({ ...companyForm, postal_code: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Country</label>
+                <label className="block text-sm font-medium text-gray-700 ">Country</label>
                 <input
                   type="text"
                   value={companyForm.country}
                   onChange={(e) => setCompanyForm({ ...companyForm, country: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 />
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 text-sm text-gray-600 ">
               <div>
                 <p className="text-xs uppercase tracking-wide">Plan</p>
-                <p className="text-gray-900 dark:text-white">{orgDetails?.plan || '—'}</p>
+                <p className="text-gray-900 ">{orgDetails?.plan || '—'}</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wide">Created</p>
-                <p className="text-gray-900 dark:text-white">
+                <p className="text-gray-900 ">
                   {orgDetails?.created_at ? new Date(orgDetails.created_at).toLocaleDateString() : '—'}
                 </p>
               </div>
@@ -237,18 +237,18 @@ export default function Settings() {
             </button>
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6 space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Currency</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Default currency and base tax preferences.</p>
+              <h2 className="text-lg font-semibold text-gray-900 ">Currency</h2>
+              <p className="text-sm text-gray-500 ">Default currency and base tax preferences.</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Currency code</label>
+                <label className="block text-sm font-medium text-gray-700 ">Currency code</label>
                 <select
                   value={currencyForm.currency_code}
                   onChange={(e) => setCurrencyForm({ ...currencyForm, currency_code: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 >
                   {currencyOptions.map((code) => (
                     <option key={code} value={code}>{code}</option>
@@ -256,18 +256,18 @@ export default function Settings() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Default tax rate (%)</label>
+                <label className="block text-sm font-medium text-gray-700 ">Default tax rate (%)</label>
                 <input
                   type="number"
                   min="0"
                   step="0.01"
                   value={currencyForm.tax_rate}
                   onChange={(e) => setCurrencyForm({ ...currencyForm, tax_rate: Number(e.target.value) })}
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 />
               </div>
             </div>
-            <label className="inline-flex items-center text-sm text-gray-700 dark:text-gray-300">
+            <label className="inline-flex items-center text-sm text-gray-700 ">
               <input
                 type="checkbox"
                 checked={currencyForm.tax_included}
@@ -301,23 +301,23 @@ export default function Settings() {
             </button>
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6 space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Tax Rules</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Create and manage tax templates.</p>
+              <h2 className="text-lg font-semibold text-gray-900 ">Tax Rules</h2>
+              <p className="text-sm text-gray-500 ">Create and manage tax templates.</p>
             </div>
             <div className="space-y-3">
               {taxTemplates.length === 0 ? (
-                <p className="text-sm text-gray-500 dark:text-gray-400">No tax rules configured.</p>
+                <p className="text-sm text-gray-500 ">No tax rules configured.</p>
               ) : (
                 taxTemplates.map((template) => (
                   <div
                     key={template.id}
-                    className="flex items-center justify-between rounded-md border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm"
+                    className="flex items-center justify-between rounded-md border border-gray-200  px-4 py-3 text-sm"
                   >
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">{template.name}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="font-medium text-gray-900 ">{template.name}</p>
+                      <p className="text-xs text-gray-500 ">
                         {template.country_code} · {template.rate}% · {template.tax_included ? 'Tax included' : 'Tax excluded'}
                       </p>
                     </div>
@@ -349,14 +349,14 @@ export default function Settings() {
                 ))
               )}
             </div>
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-4">
+            <div className="border-t border-gray-200  pt-4 space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Country</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Country</label>
                   <select
                     value={taxForm.country_code}
                     onChange={(e) => setTaxForm({ ...taxForm, country_code: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   >
                     {['US', 'CA', 'GB', 'AU', 'DE', 'FR'].map((code) => (
                       <option key={code} value={code}>{code}</option>
@@ -364,29 +364,29 @@ export default function Settings() {
                   </select>
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Name</label>
                   <input
                     type="text"
                     value={taxForm.name}
                     onChange={(e) => setTaxForm({ ...taxForm, name: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   />
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Rate (%)</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Rate (%)</label>
                   <input
                     type="number"
                     min="0"
                     step="0.01"
                     value={taxForm.rate}
                     onChange={(e) => setTaxForm({ ...taxForm, rate: Number(e.target.value) })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   />
                 </div>
                 <div className="flex items-center">
-                  <label className="inline-flex items-center text-sm text-gray-700 dark:text-gray-300">
+                  <label className="inline-flex items-center text-sm text-gray-700 ">
                     <input
                       type="checkbox"
                       checked={taxForm.tax_included}
@@ -436,7 +436,7 @@ export default function Settings() {
                 </button>
                 {taxForm.id && (
                   <button
-                    className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                    className="text-sm font-medium text-gray-600  hover:text-gray-900 "
                     onClick={() => setTaxForm({ id: '', country_code: 'US', name: '', rate: 0, tax_included: false })}
                   >
                     Cancel edit
@@ -446,20 +446,20 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6 space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">User Roles</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Assign access levels for team members.</p>
+              <h2 className="text-lg font-semibold text-gray-900 ">User Roles</h2>
+              <p className="text-sm text-gray-500 ">Assign access levels for team members.</p>
             </div>
             <div className="space-y-3">
               {orgMembers.map((member) => (
                 <div
                   key={`${member.org_id}-${member.user_id}`}
-                  className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm"
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200  px-4 py-3 text-sm"
                 >
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">{member.profiles?.email || 'Unknown'}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="font-medium text-gray-900 ">{member.profiles?.email || 'Unknown'}</p>
+                    <p className="text-xs text-gray-500 ">
                       Joined {new Date(member.created_at).toLocaleDateString()}
                     </p>
                   </div>
@@ -472,7 +472,7 @@ export default function Settings() {
                         ))
                         setOrgMembers(next)
                       }}
-                      className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                      className="rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                     >
                       <option value="member">Member</option>
                       <option value="manager">Manager</option>
@@ -498,25 +498,25 @@ export default function Settings() {
                 </div>
               ))}
               {orgMembers.length === 0 && (
-                <p className="text-sm text-gray-500 dark:text-gray-400">No users found.</p>
+                <p className="text-sm text-gray-500 ">No users found.</p>
               )}
             </div>
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6 space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Custom Fields</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Extend records with industry-specific attributes.</p>
+              <h2 className="text-lg font-semibold text-gray-900 ">Custom Fields</h2>
+              <p className="text-sm text-gray-500 ">Extend records with industry-specific attributes.</p>
             </div>
             <div className="space-y-3">
               {sortedCustomFields.map((field) => (
                 <div
                   key={field.id}
-                  className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm"
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200  px-4 py-3 text-sm"
                 >
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">{field.name}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="font-medium text-gray-900 ">{field.name}</p>
+                    <p className="text-xs text-gray-500 ">
                       {field.entity} · {field.field_type} · {field.required ? 'Required' : 'Optional'}
                     </p>
                   </div>
@@ -551,17 +551,17 @@ export default function Settings() {
                 </div>
               ))}
               {sortedCustomFields.length === 0 && (
-                <p className="text-sm text-gray-500 dark:text-gray-400">No custom fields yet.</p>
+                <p className="text-sm text-gray-500 ">No custom fields yet.</p>
               )}
             </div>
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-4">
+            <div className="border-t border-gray-200  pt-4 space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Entity</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Entity</label>
                   <select
                     value={customFieldForm.entity}
                     onChange={(e) => setCustomFieldForm({ ...customFieldForm, entity: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   >
                     <option value="product">Product</option>
                     <option value="asset">Asset</option>
@@ -570,11 +570,11 @@ export default function Settings() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Field type</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Field type</label>
                   <select
                     value={customFieldForm.field_type}
                     onChange={(e) => setCustomFieldForm({ ...customFieldForm, field_type: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   >
                     <option value="text">Text</option>
                     <option value="number">Number</option>
@@ -584,27 +584,27 @@ export default function Settings() {
                   </select>
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Field name</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Field name</label>
                   <input
                     type="text"
                     value={customFieldForm.name}
                     onChange={(e) => setCustomFieldForm({ ...customFieldForm, name: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   />
                 </div>
               </div>
               {customFieldForm.field_type === 'select' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Options (comma-separated)</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Options (comma-separated)</label>
                   <input
                     type="text"
                     value={customFieldForm.options}
                     onChange={(e) => setCustomFieldForm({ ...customFieldForm, options: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   />
                 </div>
               )}
-              <label className="inline-flex items-center text-sm text-gray-700 dark:text-gray-300">
+              <label className="inline-flex items-center text-sm text-gray-700 ">
                 <input
                   type="checkbox"
                   checked={customFieldForm.required}
@@ -659,7 +659,7 @@ export default function Settings() {
                 </button>
                 {customFieldForm.id && (
                   <button
-                    className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                    className="text-sm font-medium text-gray-600  hover:text-gray-900 "
                     onClick={() => setCustomFieldForm({ id: '', entity: 'product', name: '', field_type: 'text', required: false, options: '' })}
                   >
                     Cancel edit
@@ -669,24 +669,24 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4 lg:col-span-2">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6 space-y-4 lg:col-span-2">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Integrations</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Connect external tools and services.</p>
+              <h2 className="text-lg font-semibold text-gray-900 ">Integrations</h2>
+              <p className="text-sm text-gray-500 ">Connect external tools and services.</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {integrations.map((integration) => (
-                <div key={integration.id} className="rounded-md border border-gray-200 dark:border-gray-700 p-4">
+                <div key={integration.id} className="rounded-md border border-gray-200  p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{integration.name}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{integration.description}</p>
+                      <p className="text-sm font-medium text-gray-900 ">{integration.name}</p>
+                      <p className="text-xs text-gray-500 ">{integration.description}</p>
                     </div>
                     <button
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      className={`badge ${
                         integration.enabled
-                          ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                          : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                          ? 'bg-green-100 text-green-800  '
+                          : 'bg-gray-100 text-gray-800  '
                       }`}
                       onClick={() => {
                         setActiveIntegration(integration)
@@ -704,8 +704,8 @@ export default function Settings() {
         </div>
 
         {error && (
-          <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
-            <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+          <div className="rounded-md bg-red-50  p-4">
+            <p className="text-sm text-red-800 ">{error}</p>
           </div>
         )}
       </div>
@@ -717,65 +717,65 @@ export default function Settings() {
             onClick={() => setIntegrationModalOpen(false)}
             aria-hidden="true"
           />
-          <div className="relative w-full max-w-lg rounded-lg bg-white dark:bg-gray-900 shadow-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+          <div className="relative w-full max-w-lg rounded-lg bg-white  shadow-lg border border-gray-200  p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-gray-900 ">
                 Connect {activeIntegration.name}
               </h3>
               <button
                 onClick={() => setIntegrationModalOpen(false)}
-                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="text-gray-500 hover:text-gray-900  "
               >
                 ✕
               </button>
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-gray-500 ">
               This is a placeholder flow. Save credentials to mark the integration as connected.
             </p>
             {activeIntegration.mode === 'oauth' ? (
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Client ID</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Client ID</label>
                   <input
                     type="text"
                     value={integrationForm.client_id}
                     onChange={(e) => setIntegrationForm({ ...integrationForm, client_id: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Client Secret</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Client Secret</label>
                   <input
                     type="password"
                     value={integrationForm.client_secret}
                     onChange={(e) => setIntegrationForm({ ...integrationForm, client_secret: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Redirect URL</label>
+                  <label className="block text-sm font-medium text-gray-700 ">Redirect URL</label>
                   <input
                     type="text"
                     value={integrationForm.redirect_url}
                     onChange={(e) => setIntegrationForm({ ...integrationForm, redirect_url: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   />
                 </div>
               </div>
             ) : (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">API Key</label>
+                <label className="block text-sm font-medium text-gray-700 ">API Key</label>
                 <input
                   type="password"
                   value={integrationForm.api_key}
                   onChange={(e) => setIntegrationForm({ ...integrationForm, api_key: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 />
               </div>
             )}
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
-                className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                className="text-sm font-medium text-gray-600  hover:text-gray-900 "
                 onClick={() => setIntegrationModalOpen(false)}
               >
                 Cancel

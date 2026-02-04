@@ -16,12 +16,12 @@ const tabs = [
 ]
 
 const statusClasses: Record<string, string> = {
-  available: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-  rented: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-  service: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-  retired: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-  open: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-  paid: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
+  available: 'bg-green-100 text-green-800  ',
+  rented: 'bg-yellow-100 text-yellow-800  ',
+  service: 'bg-gray-100 text-gray-800  ',
+  retired: 'bg-red-100 text-red-800  ',
+  open: 'bg-yellow-100 text-yellow-800  ',
+  paid: 'bg-green-100 text-green-800  ',
 }
 
 export default function Rentals() {
@@ -188,7 +188,7 @@ export default function Rentals() {
         asset: asset.serial || asset.id.slice(0, 8),
         product: productName.get(asset.product_id) || '—',
         status: (
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusClasses[asset.status] || statusClasses.available}`}>
+          <span className={`badge ${statusClasses[asset.status] || statusClasses.available}`}>
             {asset.status}
           </span>
         ),
@@ -247,7 +247,7 @@ export default function Rentals() {
         contract: event.contract_id ? event.contract_id.slice(0, 8) : '—',
         date: new Date(event.event_date).toLocaleString(),
         actions: (
-          <span className="text-xs text-gray-500 dark:text-gray-400">Logged</span>
+          <span className="text-xs text-gray-500 ">Logged</span>
         ),
       })))
     } else if (activeTab === 'charges') {
@@ -256,7 +256,7 @@ export default function Rentals() {
         contract: charge.contract_id.slice(0, 8),
         amount: `$${Number(charge.amount || 0).toLocaleString()}`,
         status: (
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusClasses[charge.status] || statusClasses.open}`}>
+          <span className={`badge ${statusClasses[charge.status] || statusClasses.open}`}>
             {charge.status}
           </span>
         ),
@@ -369,11 +369,11 @@ export default function Rentals() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-4"
+              className="app-shell shadow rounded-lg border border-gray-200  p-4"
             >
-              <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{stat.label}</p>
-              <p className="mt-2 text-2xl font-semibold text-gray-900 dark:text-white">{stat.value}</p>
-              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs uppercase tracking-wide text-gray-500 ">{stat.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-gray-900 ">{stat.value}</p>
+              <p className="mt-1 text-xs text-gray-500 ">
                 Active: {assetStats.active} · Service: {assetStats.service} · Retired: {assetStats.retired}
               </p>
             </div>
@@ -388,7 +388,7 @@ export default function Rentals() {
               className={`px-3 py-2 rounded-md text-sm font-medium border ${
                 activeTab === tab.id
                   ? 'bg-primary-600 text-white border-primary-600'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700'
+                  : 'bg-white  text-gray-700  border-gray-200 '
               }`}
             >
               {tab.label}
@@ -402,23 +402,23 @@ export default function Rentals() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search..."
-            className="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+            className="w-full sm:w-64 rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
           />
         </div>
 
         {activeTab === 'charges' && (
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-900 dark:text-white">Recurring charge schedule</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-sm font-medium text-gray-900 ">Recurring charge schedule</p>
+              <p className="text-xs text-gray-500 ">
                 Auto-generates daily on first visit. Last run: {lastChargeRun || 'Not yet run'}
               </p>
               {chargeMessage && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{chargeMessage}</p>
+                <p className="text-xs text-gray-500  mt-1">{chargeMessage}</p>
               )}
             </div>
             <button
-              className="inline-flex items-center px-3 py-2 rounded-md border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="inline-flex items-center px-3 py-2 rounded-md border border-gray-200  text-sm font-medium text-gray-700  hover:bg-gray-50 "
               onClick={() => void runChargeGeneration('manual')}
               disabled={chargeRunning}
             >
@@ -444,7 +444,7 @@ export default function Rentals() {
           <>
             <button
               onClick={() => setAssetModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -480,11 +480,11 @@ export default function Rentals() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Product</label>
+            <label className="block text-sm font-medium text-gray-700 ">Product</label>
             <select
               value={assetForm.product_id}
               onChange={(e) => setAssetForm({ ...assetForm, product_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select product</option>
               {products.map((product) => (
@@ -494,20 +494,20 @@ export default function Rentals() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Serial</label>
+              <label className="block text-sm font-medium text-gray-700 ">Serial</label>
               <input
                 type="text"
                 value={assetForm.serial}
                 onChange={(e) => setAssetForm({ ...assetForm, serial: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+              <label className="block text-sm font-medium text-gray-700 ">Status</label>
               <select
                 value={assetForm.status}
                 onChange={(e) => setAssetForm({ ...assetForm, status: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               >
                 <option value="available">Available</option>
                 <option value="rented">Rented</option>
@@ -517,12 +517,12 @@ export default function Rentals() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Condition</label>
+            <label className="block text-sm font-medium text-gray-700 ">Condition</label>
             <input
               type="text"
               value={assetForm.condition}
               onChange={(e) => setAssetForm({ ...assetForm, condition: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
         </div>
@@ -536,7 +536,7 @@ export default function Rentals() {
           <>
             <button
               onClick={() => setContractModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -574,11 +574,11 @@ export default function Rentals() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 ">Customer</label>
             <select
               value={contractForm.customer_id}
               onChange={(e) => setContractForm({ ...contractForm, customer_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select customer</option>
               {customers.map((customer) => (
@@ -588,31 +588,31 @@ export default function Rentals() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Start date</label>
+              <label className="block text-sm font-medium text-gray-700 ">Start date</label>
               <input
                 type="date"
                 value={contractForm.start_date}
                 onChange={(e) => setContractForm({ ...contractForm, start_date: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">End date</label>
+              <label className="block text-sm font-medium text-gray-700 ">End date</label>
               <input
                 type="date"
                 value={contractForm.end_date}
                 onChange={(e) => setContractForm({ ...contractForm, end_date: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Billing cycle</label>
+              <label className="block text-sm font-medium text-gray-700 ">Billing cycle</label>
               <select
                 value={contractForm.billing_cycle}
                 onChange={(e) => setContractForm({ ...contractForm, billing_cycle: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               >
                 <option value="weekly">Weekly</option>
                 <option value="monthly">Monthly</option>
@@ -620,49 +620,49 @@ export default function Rentals() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Total</label>
+              <label className="block text-sm font-medium text-gray-700 ">Total</label>
               <input
                 type="number"
                 min="0"
                 value={editingContract ? contractLineTotal : contractForm.total}
                 onChange={(e) => setContractForm({ ...contractForm, total: Number(e.target.value) })}
                 disabled={Boolean(editingContract)}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
               {editingContract && (
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Auto-calculated from line items.</p>
+                <p className="mt-1 text-xs text-gray-500 ">Auto-calculated from line items.</p>
               )}
             </div>
           </div>
         </div>
 
-        <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-5">
+        <div className="mt-6 border-t border-gray-200  pt-5">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Line items</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Assets + rates that drive recurring charges.</p>
+              <h3 className="text-sm font-semibold text-gray-900 ">Line items</h3>
+              <p className="text-xs text-gray-500 ">Assets + rates that drive recurring charges.</p>
             </div>
             {!editingContract && (
-              <span className="text-xs text-gray-500 dark:text-gray-400">Save contract to add items.</span>
+              <span className="text-xs text-gray-500 ">Save contract to add items.</span>
             )}
           </div>
 
           {editingContract && (
             <div className="mt-4 space-y-3">
               {linesLoading ? (
-                <p className="text-xs text-gray-500 dark:text-gray-400">Loading line items...</p>
+                <p className="text-xs text-gray-500 ">Loading line items...</p>
               ) : contractLines.length === 0 ? (
-                <p className="text-xs text-gray-500 dark:text-gray-400">No line items yet.</p>
+                <p className="text-xs text-gray-500 ">No line items yet.</p>
               ) : (
                 <div className="space-y-2">
                   {contractLines.map((line) => {
                     const asset = assets.find((item) => item.id === line.asset_id)
                     const assetLabel = asset?.serial || line.asset_id?.slice(0, 8) || 'Unassigned'
                     return (
-                      <div key={line.id} className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200 dark:border-gray-700 px-3 py-2">
+                      <div key={line.id} className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200  px-3 py-2">
                         <div>
-                          <p className="text-sm font-medium text-gray-900 dark:text-white">{assetLabel}</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                          <p className="text-sm font-medium text-gray-900 ">{assetLabel}</p>
+                          <p className="text-xs text-gray-500 ">
                             ${Number(line.rate || 0).toLocaleString()} · {line.frequency}
                             {line.next_charge_date ? ` · Next ${new Date(line.next_charge_date).toLocaleDateString()}` : ''}
                           </p>
@@ -701,11 +701,11 @@ export default function Rentals() {
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-300">Asset</label>
+                  <label className="block text-xs font-medium text-gray-600 ">Asset</label>
                   <select
                     value={lineForm.asset_id}
                     onChange={(e) => setLineForm({ ...lineForm, asset_id: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   >
                     <option value="">Select asset</option>
                     {assets.map((asset) => (
@@ -716,21 +716,21 @@ export default function Rentals() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-300">Rate</label>
+                  <label className="block text-xs font-medium text-gray-600 ">Rate</label>
                   <input
                     type="number"
                     min="0"
                     value={lineForm.rate}
                     onChange={(e) => setLineForm({ ...lineForm, rate: Number(e.target.value) })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-300">Frequency</label>
+                  <label className="block text-xs font-medium text-gray-600 ">Frequency</label>
                   <select
                     value={lineForm.frequency}
                     onChange={(e) => setLineForm({ ...lineForm, frequency: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                   >
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
@@ -769,7 +769,7 @@ export default function Rentals() {
                 </button>
                 {editingLine && (
                   <button
-                    className="text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                    className="text-xs font-medium text-gray-600  hover:text-gray-900 "
                     onClick={() => {
                       setEditingLine(null)
                       setLineForm({ asset_id: '', rate: 0, frequency: 'monthly' })
@@ -792,7 +792,7 @@ export default function Rentals() {
           <>
             <button
               onClick={() => setEventModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -824,11 +824,11 @@ export default function Rentals() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contract</label>
+            <label className="block text-sm font-medium text-gray-700 ">Contract</label>
             <select
               value={eventForm.contract_id}
               onChange={(e) => setEventForm({ ...eventForm, contract_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select contract</option>
               {contracts.map((contract) => (
@@ -837,11 +837,11 @@ export default function Rentals() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Asset</label>
+            <label className="block text-sm font-medium text-gray-700 ">Asset</label>
             <select
               value={eventForm.asset_id}
               onChange={(e) => setEventForm({ ...eventForm, asset_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select asset</option>
               {assets.map((asset) => (
@@ -851,23 +851,23 @@ export default function Rentals() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Event</label>
+              <label className="block text-sm font-medium text-gray-700 ">Event</label>
               <select
                 value={eventForm.event_type}
                 onChange={(e) => setEventForm({ ...eventForm, event_type: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               >
                 <option value="checkout">Check-out</option>
                 <option value="checkin">Check-in</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
+              <label className="block text-sm font-medium text-gray-700 ">Notes</label>
               <input
                 type="text"
                 value={eventForm.notes}
                 onChange={(e) => setEventForm({ ...eventForm, notes: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
           </div>
@@ -882,7 +882,7 @@ export default function Rentals() {
           <>
             <button
               onClick={() => setChargeModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -917,11 +917,11 @@ export default function Rentals() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contract</label>
+            <label className="block text-sm font-medium text-gray-700 ">Contract</label>
             <select
               value={chargeForm.contract_id}
               onChange={(e) => setChargeForm({ ...chargeForm, contract_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select contract</option>
               {contracts.map((contract) => (
@@ -930,11 +930,11 @@ export default function Rentals() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Asset</label>
+            <label className="block text-sm font-medium text-gray-700 ">Asset</label>
             <select
               value={chargeForm.asset_id}
               onChange={(e) => setChargeForm({ ...chargeForm, asset_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select asset</option>
               {assets.map((asset) => (
@@ -944,21 +944,21 @@ export default function Rentals() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Amount</label>
+              <label className="block text-sm font-medium text-gray-700 ">Amount</label>
               <input
                 type="number"
                 min="0"
                 value={chargeForm.amount}
                 onChange={(e) => setChargeForm({ ...chargeForm, amount: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+              <label className="block text-sm font-medium text-gray-700 ">Status</label>
               <select
                 value={chargeForm.status}
                 onChange={(e) => setChargeForm({ ...chargeForm, status: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               >
                 <option value="open">Open</option>
                 <option value="paid">Paid</option>
@@ -966,12 +966,12 @@ export default function Rentals() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Due date</label>
+            <label className="block text-sm font-medium text-gray-700 ">Due date</label>
             <input
               type="date"
               value={chargeForm.due_date}
               onChange={(e) => setChargeForm({ ...chargeForm, due_date: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
         </div>

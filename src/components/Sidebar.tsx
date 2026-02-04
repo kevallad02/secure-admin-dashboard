@@ -30,14 +30,14 @@ const menuItems = [
 export default function Sidebar() {
   const { canManageTaxes } = useAuth()
   return (
-    <div className="flex flex-col w-64 app-shell border-r border-gray-200 dark:border-gray-700 h-screen sticky top-0">
+    <div className="flex flex-col w-64 app-shell border-r border-gray-200  h-screen sticky top-0">
       {/* Logo */}
-      <div className="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-center h-16 border-b border-gray-200 ">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">A</span>
           </div>
-          <span className="text-xl font-bold text-gray-900 dark:text-white">
+          <span className="text-xl font-bold text-gray-900 ">
             Admin
           </span>
         </div>
@@ -55,8 +55,8 @@ export default function Sidebar() {
               className={({ isActive }) =>
                 `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                   isActive
-                    ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? 'bg-primary-50  text-primary-700 '
+                    : 'text-gray-700  hover:bg-gray-100 '
                 }`
               }
             >
@@ -65,8 +65,8 @@ export default function Sidebar() {
                   <item.icon
                     className={`w-5 h-5 mr-3 ${
                       isActive
-                        ? 'text-primary-700 dark:text-primary-400'
-                        : 'text-gray-500 dark:text-gray-400'
+                        ? 'text-primary-700 '
+                        : 'text-gray-500 '
                     }`}
                   />
                   {item.name}
@@ -78,8 +78,8 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 dark:border-gray-700 p-4">
-        <div className="text-xs text-gray-500 dark:text-gray-400">
+      <div className="border-t border-gray-200  p-4">
+        <div className="text-xs text-gray-500 ">
           v1.0.0
         </div>
       </div>

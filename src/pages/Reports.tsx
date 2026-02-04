@@ -243,7 +243,7 @@ export default function Reports() {
                   className={`px-3 py-2 rounded-md text-xs font-medium border ${
                     rangeMode === 'preset'
                       ? 'bg-primary-600 text-white border-primary-600'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700'
+                      : 'bg-white  text-gray-700  border-gray-200 '
                   }`}
                 >
                   Presets
@@ -253,7 +253,7 @@ export default function Reports() {
                   className={`px-3 py-2 rounded-md text-xs font-medium border ${
                     rangeMode === 'custom'
                       ? 'bg-primary-600 text-white border-primary-600'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700'
+                      : 'bg-white  text-gray-700  border-gray-200 '
                   }`}
                 >
                   Custom
@@ -268,7 +268,7 @@ export default function Reports() {
                       className={`px-3 py-2 rounded-md text-sm font-medium border ${
                         duration === option.id
                           ? 'bg-primary-600 text-white border-primary-600'
-                          : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700'
+                          : 'bg-white  text-gray-700  border-gray-200 '
                       }`}
                     >
                       {option.label}
@@ -281,14 +281,14 @@ export default function Reports() {
                     type="date"
                     value={customStart}
                     onChange={(e) => setCustomStart(e.target.value)}
-                    className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-xs text-gray-900 dark:text-white"
+                    className="rounded-md border border-gray-300  bg-white  px-3 py-2 text-xs text-gray-900 "
                   />
-                  <span className="text-xs text-gray-500 dark:text-gray-400">to</span>
+                  <span className="text-xs text-gray-500 ">to</span>
                   <input
                     type="date"
                     value={customEnd}
                     onChange={(e) => setCustomEnd(e.target.value)}
-                    className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-xs text-gray-900 dark:text-white"
+                    className="rounded-md border border-gray-300  bg-white  px-3 py-2 text-xs text-gray-900 "
                   />
                 </div>
               )}
@@ -305,10 +305,10 @@ export default function Reports() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-4"
+              className="app-shell shadow rounded-lg border border-gray-200  p-4"
             >
-              <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{stat.label}</p>
-              <p className="mt-2 text-2xl font-semibold text-gray-900 dark:text-white">
+              <p className="text-xs uppercase tracking-wide text-gray-500 ">{stat.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-gray-900 ">
                 {loading ? '...' : stat.value}
               </p>
             </div>
@@ -316,15 +316,15 @@ export default function Reports() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Inventory Valuation</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Estimated value using average purchase costs.</p>
+                <h2 className="text-lg font-semibold text-gray-900 ">Inventory Valuation</h2>
+                <p className="text-sm text-gray-500 ">Estimated value using average purchase costs.</p>
               </div>
               <div className="flex items-center gap-3">
                 <button
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900  "
                   onClick={() => {
                     handleExport(
                       'inventory-valuation.csv',
@@ -347,7 +347,7 @@ export default function Reports() {
                 >
                   {showInventoryDetails ? 'Hide details' : 'View details'}
                 </button>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <span className="text-sm text-gray-500 ">
                   Total: ${inventoryValuation.totalValue.toLocaleString()}
                 </span>
               </div>
@@ -356,21 +356,21 @@ export default function Reports() {
               {inventoryValuation.rows.slice(0, 8).map((row, index) => (
                 <div key={`${row.product}-${index}`} className="flex items-center justify-between text-sm">
                   <div>
-                    <p className="text-gray-900 dark:text-white">{row.product}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{row.location}</p>
+                    <p className="text-gray-900 ">{row.product}</p>
+                    <p className="text-xs text-gray-500 ">{row.location}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-gray-900 dark:text-white">${row.value.toLocaleString()}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{row.qty} units</p>
+                    <p className="text-gray-900 ">${row.value.toLocaleString()}</p>
+                    <p className="text-xs text-gray-500 ">{row.qty} units</p>
                   </div>
                 </div>
               ))}
               {inventoryValuation.rows.length === 0 && (
-                <p className="text-sm text-gray-500 dark:text-gray-400">No stock valuation data yet.</p>
+                <p className="text-sm text-gray-500 ">No stock valuation data yet.</p>
               )}
             </div>
             {showInventoryDetails && inventoryValuation.rows.length > 0 && (
-              <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
+              <div className="mt-6 border-t border-gray-200  pt-4 space-y-2">
                 {inventoryValuation.rows.map((row, index) => (
                   <div key={`${row.product}-${index}`} className="flex items-center justify-between text-sm">
                     <span>{row.product}</span>
@@ -383,15 +383,15 @@ export default function Reports() {
             )}
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Sales & Revenue</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Invoices and payments across the selected range.</p>
+                <h2 className="text-lg font-semibold text-gray-900 ">Sales & Revenue</h2>
+                <p className="text-sm text-gray-500 ">Invoices and payments across the selected range.</p>
               </div>
               <div className="flex items-center gap-3">
                 <button
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900  "
                   onClick={() => {
                     handleExport(
                       'sales-revenue.csv',
@@ -419,7 +419,7 @@ export default function Reports() {
             </div>
             <div className="mt-4 space-y-4">
               <div>
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Invoice totals</p>
+                <p className="text-xs font-medium text-gray-500  uppercase">Invoice totals</p>
                 <div className="mt-2 grid grid-cols-6 gap-2 items-end h-32">
                   {revenueSeries.map((item, index) => (
                     <div key={`${item.label}-${index}`} className="flex flex-col items-center gap-2">
@@ -427,13 +427,13 @@ export default function Reports() {
                         className="w-full rounded-md bg-primary-500/70"
                         style={{ height: `${maxRevenue ? (item.value / maxRevenue) * 100 : 0}%` }}
                       />
-                      <span className="text-[10px] text-gray-500 dark:text-gray-400">{item.label}</span>
+                      <span className="text-[10px] text-gray-500 ">{item.label}</span>
                     </div>
                   ))}
                 </div>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Payment totals</p>
+                <p className="text-xs font-medium text-gray-500  uppercase">Payment totals</p>
                 <div className="mt-2 grid grid-cols-6 gap-2 items-end h-32">
                   {paymentsSeries.map((item, index) => (
                     <div key={`${item.label}-${index}`} className="flex flex-col items-center gap-2">
@@ -441,18 +441,18 @@ export default function Reports() {
                         className="w-full rounded-md bg-emerald-500/70"
                         style={{ height: `${maxPayments ? (item.value / maxPayments) * 100 : 0}%` }}
                       />
-                      <span className="text-[10px] text-gray-500 dark:text-gray-400">{item.label}</span>
+                      <span className="text-[10px] text-gray-500 ">{item.label}</span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
             {showSalesDetails && (
-              <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3 text-sm">
+              <div className="mt-6 border-t border-gray-200  pt-4 space-y-3 text-sm">
                 <div>
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Invoices</p>
+                  <p className="text-xs font-medium text-gray-500  uppercase">Invoices</p>
                   {invoices.filter((invoice) => isWithinRange(invoice.created_at || invoice.due_date)).length === 0 ? (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">No invoices in range.</p>
+                    <p className="text-sm text-gray-500 ">No invoices in range.</p>
                   ) : (
                     invoices
                       .filter((invoice) => isWithinRange(invoice.created_at || invoice.due_date))
@@ -466,9 +466,9 @@ export default function Reports() {
                   )}
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Payments</p>
+                  <p className="text-xs font-medium text-gray-500  uppercase">Payments</p>
                   {payments.filter((payment) => isWithinRange(payment.paid_at || payment.created_at)).length === 0 ? (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">No payments in range.</p>
+                    <p className="text-sm text-gray-500 ">No payments in range.</p>
                   ) : (
                     payments
                       .filter((payment) => isWithinRange(payment.paid_at || payment.created_at))
@@ -485,15 +485,15 @@ export default function Reports() {
             )}
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Profit / Loss</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Revenue minus purchase costs.</p>
+                <h2 className="text-lg font-semibold text-gray-900 ">Profit / Loss</h2>
+                <p className="text-sm text-gray-500 ">Revenue minus purchase costs.</p>
               </div>
               <div className="flex items-center gap-3">
                 <button
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900  "
                   onClick={() => {
                     handleExport(
                       'profit-loss.csv',
@@ -522,12 +522,12 @@ export default function Reports() {
                 { label: 'COGS', value: profitLoss.cogs, color: 'bg-orange-400/70' },
                 { label: 'Gross Profit', value: profitLoss.grossProfit, color: 'bg-emerald-500/70' },
               ].map((item) => (
-                <div key={item.label} className="rounded-md border border-gray-200 dark:border-gray-700 p-4">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{item.label}</p>
-                  <p className="mt-2 text-xl font-semibold text-gray-900 dark:text-white">
+                <div key={item.label} className="rounded-md border border-gray-200  p-4">
+                  <p className="text-xs text-gray-500 ">{item.label}</p>
+                  <p className="mt-2 text-xl font-semibold text-gray-900 ">
                     ${item.value.toLocaleString()}
                   </p>
-                  <div className="mt-3 h-2 rounded-full bg-gray-100 dark:bg-gray-800">
+                  <div className="mt-3 h-2 rounded-full bg-gray-100 ">
                     <div
                       className={`h-full rounded-full ${item.color}`}
                       style={{
@@ -539,10 +539,10 @@ export default function Reports() {
               ))}
             </div>
             {showProfitDetails && (
-              <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2 text-sm">
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">COGS lines</p>
+              <div className="mt-6 border-t border-gray-200  pt-4 space-y-2 text-sm">
+                <p className="text-xs font-medium text-gray-500  uppercase">COGS lines</p>
                 {poLines.filter((line) => isWithinRange(line.created_at)).length === 0 ? (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">No COGS entries in range.</p>
+                  <p className="text-sm text-gray-500 ">No COGS entries in range.</p>
                 ) : (
                   poLines
                     .filter((line) => isWithinRange(line.created_at))
@@ -558,15 +558,15 @@ export default function Reports() {
             )}
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Customer Balances</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Outstanding balances by customer.</p>
+                <h2 className="text-lg font-semibold text-gray-900 ">Customer Balances</h2>
+                <p className="text-sm text-gray-500 ">Outstanding balances by customer.</p>
               </div>
               <div className="flex items-center gap-3">
                 <button
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900  "
                   onClick={() => {
                     handleExport(
                       'customer-balances.csv',
@@ -588,24 +588,24 @@ export default function Reports() {
             <div className="mt-4 space-y-3">
               {customerBalances.slice(0, 8).map((row) => (
                 <div key={row.customer} className="flex items-center justify-between text-sm">
-                  <span className="text-gray-900 dark:text-white">{row.customer}</span>
+                  <span className="text-gray-900 ">{row.customer}</span>
                   <div className="flex items-center gap-3">
-                    <div className="w-40 h-2 rounded-full bg-gray-100 dark:bg-gray-800">
+                    <div className="w-40 h-2 rounded-full bg-gray-100 ">
                       <div
                         className="h-full rounded-full bg-red-500/70"
                         style={{ width: `${maxCustomerBalance ? (row.balance / maxCustomerBalance) * 100 : 0}%` }}
                       />
                     </div>
-                    <span className="text-gray-700 dark:text-gray-200">${row.balance.toLocaleString()}</span>
+                    <span className="text-gray-700 ">${row.balance.toLocaleString()}</span>
                   </div>
                 </div>
               ))}
               {customerBalances.length === 0 && (
-                <p className="text-sm text-gray-500 dark:text-gray-400">No outstanding balances.</p>
+                <p className="text-sm text-gray-500 ">No outstanding balances.</p>
               )}
             </div>
             {showCustomerDetails && customerBalances.length > 0 && (
-              <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2 text-sm">
+              <div className="mt-6 border-t border-gray-200  pt-4 space-y-2 text-sm">
                 {customerBalances.map((row) => (
                   <div key={row.customer} className="flex items-center justify-between">
                     <span>{row.customer}</span>
@@ -616,15 +616,15 @@ export default function Reports() {
             )}
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 lg:col-span-2">
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6 lg:col-span-2">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Rental Utilization</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Asset status distribution and utilization rate.</p>
+                <h2 className="text-lg font-semibold text-gray-900 ">Rental Utilization</h2>
+                <p className="text-sm text-gray-500 ">Asset status distribution and utilization rate.</p>
               </div>
               <div className="flex items-center gap-3">
                 <button
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900  "
                   onClick={() => {
                     handleExport(
                       'rental-utilization.csv',
@@ -652,28 +652,28 @@ export default function Reports() {
                   { label: 'Retired', value: rentalStats.retired, color: 'bg-gray-500/70' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center justify-between text-sm">
-                    <span className="text-gray-900 dark:text-white">{item.label}</span>
+                    <span className="text-gray-900 ">{item.label}</span>
                     <div className="flex items-center gap-3">
-                      <div className="w-32 h-2 rounded-full bg-gray-100 dark:bg-gray-800">
+                      <div className="w-32 h-2 rounded-full bg-gray-100 ">
                         <div
                           className={`h-full rounded-full ${item.color}`}
                           style={{ width: `${rentalStats.total > 0 ? (item.value / rentalStats.total) * 100 : 0}%` }}
                         />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-200">{item.value}</span>
+                      <span className="text-gray-700 ">{item.value}</span>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                <p className="text-xs uppercase text-gray-500 dark:text-gray-400">Utilization</p>
-                <p className="mt-2 text-3xl font-semibold text-gray-900 dark:text-white">
+              <div className="rounded-lg border border-gray-200  p-4">
+                <p className="text-xs uppercase text-gray-500 ">Utilization</p>
+                <p className="mt-2 text-3xl font-semibold text-gray-900 ">
                   {(rentalStats.utilization * 100).toFixed(1)}%
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-gray-500  mt-1">
                   {rentalStats.rented} of {Math.max(0, rentalStats.total - rentalStats.retired)} active assets rented.
                 </p>
-                <div className="mt-4 h-2 rounded-full bg-gray-100 dark:bg-gray-800">
+                <div className="mt-4 h-2 rounded-full bg-gray-100 ">
                   <div
                     className="h-full rounded-full bg-primary-600"
                     style={{ width: `${rentalStats.utilization * 100}%` }}
@@ -682,7 +682,7 @@ export default function Reports() {
               </div>
             </div>
             {showRentalDetails && assets.length > 0 && (
-              <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2 text-sm">
+              <div className="mt-6 border-t border-gray-200  pt-4 space-y-2 text-sm">
                 {assets.map((asset) => (
                   <div key={asset.id} className="flex items-center justify-between">
                     <span>{asset.serial || asset.id.slice(0, 8)}</span>

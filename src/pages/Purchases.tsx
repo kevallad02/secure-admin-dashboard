@@ -14,9 +14,9 @@ const tabs = [
 ]
 
 const statusClasses: Record<string, string> = {
-  received: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-  open: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-  draft: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+  received: 'bg-green-100 text-green-800  ',
+  open: 'bg-yellow-100 text-yellow-800  ',
+  draft: 'bg-gray-100 text-gray-800  ',
 }
 
 export default function Purchases() {
@@ -138,7 +138,7 @@ export default function Purchases() {
         po: order.id.slice(0, 8),
         vendor: mapVendorName.get(order.vendor_id) || '—',
         status: (
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusClasses[order.status] || statusClasses.draft}`}>
+          <span className={`badge ${statusClasses[order.status] || statusClasses.draft}`}>
             {order.status}
           </span>
         ),
@@ -190,7 +190,7 @@ export default function Purchases() {
         receipt: receipt.id.slice(0, 8),
         po: receipt.po_id ? receipt.po_id.slice(0, 8) : '—',
         status: (
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusClasses[receipt.status] || statusClasses.open}`}>
+          <span className={`badge ${statusClasses[receipt.status] || statusClasses.open}`}>
             {receipt.status}
           </span>
         ),
@@ -315,7 +315,7 @@ export default function Purchases() {
               className={`px-3 py-2 rounded-md text-sm font-medium border ${
                 activeTab === tab.id
                   ? 'bg-primary-600 text-white border-primary-600'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700'
+                  : 'bg-white  text-gray-700  border-gray-200 '
               }`}
             >
               {tab.label}
@@ -329,7 +329,7 @@ export default function Purchases() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search..."
-            className="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+            className="w-full sm:w-64 rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
           />
         </div>
 
@@ -342,12 +342,12 @@ export default function Purchases() {
         />
 
         {activeTab === 'vendors' && (
-          <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">Vendor Balance & Aging</h3>
+          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
+            <h3 className="text-lg font-medium text-gray-900 ">Vendor Balance & Aging</h3>
             <div className="mt-4 overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>
-                  <tr className="text-left text-gray-500 dark:text-gray-400">
+                  <tr className="text-left text-gray-500 ">
                     <th className="py-2 pr-4">Vendor</th>
                     <th className="py-2 pr-4">Balance</th>
                     <th className="py-2 pr-4">0-30</th>
@@ -356,10 +356,10 @@ export default function Purchases() {
                     <th className="py-2 pr-4">90+</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y divide-gray-200 ">
                   {vendorAging.map((row) => (
                     <tr key={row.vendor}>
-                      <td className="py-2 pr-4 text-gray-900 dark:text-white">{row.vendor}</td>
+                      <td className="py-2 pr-4 text-gray-900 ">{row.vendor}</td>
                       <td className="py-2 pr-4">${row.balance.toLocaleString()}</td>
                       <td className="py-2 pr-4">${row.b0.toLocaleString()}</td>
                       <td className="py-2 pr-4">${row.b30.toLocaleString()}</td>
@@ -369,7 +369,7 @@ export default function Purchases() {
                   ))}
                   {vendorAging.length === 0 && (
                     <tr>
-                      <td className="py-4 text-gray-500 dark:text-gray-400" colSpan={6}>
+                      <td className="py-4 text-gray-500 " colSpan={6}>
                         No vendor balances yet.
                       </td>
                     </tr>
@@ -389,7 +389,7 @@ export default function Purchases() {
           <>
             <button
               onClick={() => setVendorModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -421,30 +421,30 @@ export default function Purchases() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+            <label className="block text-sm font-medium text-gray-700 ">Name</label>
             <input
               type="text"
               value={vendorForm.name}
               onChange={(e) => setVendorForm({ ...vendorForm, name: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <label className="block text-sm font-medium text-gray-700 ">Email</label>
             <input
               type="email"
               value={vendorForm.email}
               onChange={(e) => setVendorForm({ ...vendorForm, email: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone</label>
+            <label className="block text-sm font-medium text-gray-700 ">Phone</label>
             <input
               type="text"
               value={vendorForm.phone}
               onChange={(e) => setVendorForm({ ...vendorForm, phone: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
         </div>
@@ -458,7 +458,7 @@ export default function Purchases() {
           <>
             <button
               onClick={() => setOrderModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -494,11 +494,11 @@ export default function Purchases() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Vendor</label>
+            <label className="block text-sm font-medium text-gray-700 ">Vendor</label>
             <select
               value={orderForm.vendor_id}
               onChange={(e) => setOrderForm({ ...orderForm, vendor_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select vendor</option>
               {vendors.map((vendor) => (
@@ -508,11 +508,11 @@ export default function Purchases() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+              <label className="block text-sm font-medium text-gray-700 ">Status</label>
               <select
                 value={orderForm.status}
                 onChange={(e) => setOrderForm({ ...orderForm, status: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               >
                 <option value="draft">Draft</option>
                 <option value="open">Open</option>
@@ -520,23 +520,23 @@ export default function Purchases() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Total</label>
+              <label className="block text-sm font-medium text-gray-700 ">Total</label>
               <input
                 type="number"
                 min="0"
                 value={orderForm.total}
                 onChange={(e) => setOrderForm({ ...orderForm, total: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Ordered at</label>
+            <label className="block text-sm font-medium text-gray-700 ">Ordered at</label>
             <input
               type="date"
               value={orderForm.ordered_at}
               onChange={(e) => setOrderForm({ ...orderForm, ordered_at: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
         </div>
@@ -550,7 +550,7 @@ export default function Purchases() {
           <>
             <button
               onClick={() => setReceiptModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -586,11 +586,11 @@ export default function Purchases() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Order</label>
+            <label className="block text-sm font-medium text-gray-700 ">Purchase Order</label>
             <select
               value={receiptForm.po_id}
               onChange={(e) => setReceiptForm({ ...receiptForm, po_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             >
               <option value="">Select PO</option>
               {orders.map((order) => (
@@ -600,34 +600,34 @@ export default function Purchases() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+              <label className="block text-sm font-medium text-gray-700 ">Status</label>
               <select
                 value={receiptForm.status}
                 onChange={(e) => setReceiptForm({ ...receiptForm, status: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               >
                 <option value="received">Received</option>
                 <option value="partial">Partial</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Total</label>
+              <label className="block text-sm font-medium text-gray-700 ">Total</label>
               <input
                 type="number"
                 min="0"
                 value={receiptForm.total}
                 onChange={(e) => setReceiptForm({ ...receiptForm, total: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Received at</label>
+            <label className="block text-sm font-medium text-gray-700 ">Received at</label>
             <input
               type="date"
               value={receiptForm.received_at}
               onChange={(e) => setReceiptForm({ ...receiptForm, received_at: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
           </div>
         </div>
@@ -648,12 +648,12 @@ export default function Purchases() {
       >
         {selectedPO ? (
           <div className="space-y-4">
-            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center justify-between text-sm text-gray-600 ">
               <span>PO #{selectedPO.id.slice(0, 8)}</span>
               <span>Total: ${Number(selectedPO.total || 0).toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between mb-2">
-              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200">Line Items</h4>
+              <h4 className="text-sm font-semibold text-gray-700 ">Line Items</h4>
               <button
                 className="text-sm font-medium text-primary-600 hover:text-primary-700"
                 onClick={() => {
@@ -668,7 +668,7 @@ export default function Purchases() {
               </button>
             </div>
             {poLines.length === 0 ? (
-              <p className="text-sm text-gray-500 dark:text-gray-400">No line items.</p>
+              <p className="text-sm text-gray-500 ">No line items.</p>
             ) : (
               <div className="space-y-2">
                 {poLines.map((line) => (
@@ -712,7 +712,7 @@ export default function Purchases() {
             )}
           </div>
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">No PO selected.</p>
+          <p className="text-sm text-gray-500 ">No PO selected.</p>
         )}
       </Modal>
 
@@ -731,12 +731,12 @@ export default function Purchases() {
       >
         {selectedReceipt ? (
           <div className="space-y-4">
-            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center justify-between text-sm text-gray-600 ">
               <span>Receipt #{selectedReceipt.id.slice(0, 8)}</span>
               <span>Total: ${Number(selectedReceipt.total || 0).toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between mb-2">
-              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200">Line Items</h4>
+              <h4 className="text-sm font-semibold text-gray-700 ">Line Items</h4>
               <button
                 className="text-sm font-medium text-primary-600 hover:text-primary-700"
                 onClick={() => {
@@ -751,7 +751,7 @@ export default function Purchases() {
               </button>
             </div>
             {receiptLines.length === 0 ? (
-              <p className="text-sm text-gray-500 dark:text-gray-400">No line items.</p>
+              <p className="text-sm text-gray-500 ">No line items.</p>
             ) : (
               <div className="space-y-2">
                 {receiptLines.map((line) => (
@@ -795,7 +795,7 @@ export default function Purchases() {
             )}
           </div>
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">No receipt selected.</p>
+          <p className="text-sm text-gray-500 ">No receipt selected.</p>
         )}
       </Modal>
 
@@ -807,7 +807,7 @@ export default function Purchases() {
           <>
             <button
               onClick={() => setLineModalOpen(false)}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
             >
               Cancel
             </button>
@@ -866,16 +866,16 @@ export default function Purchases() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Product</label>
+            <label className="block text-sm font-medium text-gray-700 ">Product</label>
             <input
               type="text"
               value={productQuery}
               onChange={(e) => setProductQuery(e.target.value)}
               placeholder="Search products..."
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
             />
             {productQuery.trim() && (
-              <div className="mt-2 max-h-40 overflow-auto rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+              <div className="mt-2 max-h-40 overflow-auto rounded-md border border-gray-200  bg-white ">
                 {products
                   .filter((product) => product.name.toLowerCase().includes(productQuery.toLowerCase()))
                   .slice(0, 8)
@@ -887,7 +887,7 @@ export default function Purchases() {
                         setLineForm({ ...lineForm, product_id: product.id })
                         setProductQuery(product.name)
                       }}
-                      className="w-full text-left px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="w-full text-left px-3 py-2 text-sm text-gray-800  hover:bg-gray-100 "
                     >
                       {product.name}
                     </button>
@@ -897,23 +897,23 @@ export default function Purchases() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Quantity</label>
+              <label className="block text-sm font-medium text-gray-700 ">Quantity</label>
               <input
                 type="number"
                 min="1"
                 value={lineForm.qty}
                 onChange={(e) => setLineForm({ ...lineForm, qty: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Unit cost</label>
+              <label className="block text-sm font-medium text-gray-700 ">Unit cost</label>
               <input
                 type="number"
                 min="0"
                 value={lineForm.unit_cost}
                 onChange={(e) => setLineForm({ ...lineForm, unit_cost: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
               />
             </div>
           </div>

@@ -111,16 +111,16 @@ export default function TaxTemplates() {
   return (
     <DashboardLayout>
       <div className="max-w-4xl mx-auto space-y-6">
-        <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Tax Templates</h1>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
+          <h1 className="text-2xl font-semibold text-gray-900 ">Tax Templates</h1>
+          <p className="text-sm text-gray-600  mt-1">
             Manage country tax defaults for onboarding.
           </p>
         </div>
 
         {!canManageTaxes && (
-          <div className="rounded-md bg-yellow-50 dark:bg-yellow-900/20 p-4">
-            <p className="text-sm text-yellow-800 dark:text-yellow-200">
+          <div className="rounded-md bg-yellow-50  p-4">
+            <p className="text-sm text-yellow-800 ">
               You need admin access to edit templates.
             </p>
           </div>
@@ -128,17 +128,17 @@ export default function TaxTemplates() {
 
         <form
           onSubmit={handleSubmit}
-          className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4"
+          className="app-shell shadow rounded-lg border border-gray-200  p-6 space-y-4"
         >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-gray-700 ">
                 Country
               </label>
               <select
                 value={form.country_code}
                 onChange={(e) => setForm({ ...form, country_code: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 disabled={!canManageTaxes}
               >
                 {countryOptions.map((country) => (
@@ -147,19 +147,19 @@ export default function TaxTemplates() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-gray-700 ">
                 Name
               </label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 disabled={!canManageTaxes}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-gray-700 ">
                 Rate (%)
               </label>
               <input
@@ -168,12 +168,12 @@ export default function TaxTemplates() {
                 min="0"
                 value={form.rate}
                 onChange={(e) => setForm({ ...form, rate: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
                 disabled={!canManageTaxes}
               />
             </div>
           </div>
-          <label className="inline-flex items-center text-sm text-gray-700 dark:text-gray-300">
+          <label className="inline-flex items-center text-sm text-gray-700 ">
             <input
               type="checkbox"
               checked={form.tax_included}
@@ -185,8 +185,8 @@ export default function TaxTemplates() {
           </label>
 
           {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
-              <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+            <div className="rounded-md bg-red-50  p-4">
+              <p className="text-sm text-red-800 ">{error}</p>
             </div>
           )}
 
@@ -194,7 +194,7 @@ export default function TaxTemplates() {
             <button
               type="button"
               onClick={resetForm}
-              className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
               disabled={!canManageTaxes}
             >
               Reset
@@ -209,24 +209,24 @@ export default function TaxTemplates() {
           </div>
         </form>
 
-        <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white">Templates</h2>
+        <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
+          <h2 className="text-lg font-medium text-gray-900 ">Templates</h2>
           <div className="mt-4 space-y-3">
             {loading ? (
-              <p className="text-sm text-gray-500 dark:text-gray-400">Loading...</p>
+              <p className="text-sm text-gray-500 ">Loading...</p>
             ) : templates.length === 0 ? (
-              <p className="text-sm text-gray-500 dark:text-gray-400">No templates found.</p>
+              <p className="text-sm text-gray-500 ">No templates found.</p>
             ) : (
               templates.map((template) => (
                 <div
                   key={template.id}
-                  className="flex items-center justify-between rounded-md border border-gray-200 dark:border-gray-700 px-4 py-3"
+                  className="flex items-center justify-between rounded-md border border-gray-200  px-4 py-3"
                 >
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    <p className="text-sm font-medium text-gray-900 ">
                       {template.name}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-gray-500 ">
                       {template.country_code} · {template.rate}% · {template.tax_included ? 'Tax included' : 'Tax excluded'}
                     </p>
                   </div>

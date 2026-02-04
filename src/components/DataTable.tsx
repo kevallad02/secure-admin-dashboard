@@ -80,27 +80,27 @@ export default function DataTable({
   }, [rows, search])
 
   return (
-    <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div className="app-shell shadow rounded-lg border border-gray-200  overflow-hidden">
       {enableSearch && (
-        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+        <div className="px-4 py-3 border-b border-gray-200 ">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={searchPlaceholder}
-            className="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white"
+            className="w-full sm:w-64 rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
           />
         </div>
       )}
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
-          <thead className="bg-gray-50 dark:bg-gray-800/60">
+        <table className="min-w-full divide-y divide-gray-200  text-sm">
+          <thead className="bg-gray-50 ">
             <tr>
               {columns.map((column) => (
                 <th
                   key={column.key}
                   scope="col"
-                  className={`px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-200 ${column.className || ''}`}
+                  className={`px-4 py-3 text-left font-semibold text-gray-700  ${column.className || ''}`}
                 >
                   <button
                     type="button"
@@ -109,7 +109,7 @@ export default function DataTable({
                   >
                     {column.header}
                     {enableSort && sortKey === column.key && (
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-gray-500 ">
                         {sortDir === 'asc' ? '▲' : '▼'}
                       </span>
                     )}
@@ -118,11 +118,11 @@ export default function DataTable({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody className="divide-y divide-gray-200 ">
             {loading ? (
               <tr>
                 <td
-                  className="px-4 py-6 text-center text-gray-500 dark:text-gray-400"
+                  className="px-4 py-6 text-center text-gray-500 "
                   colSpan={columns.length}
                 >
                   Loading...
@@ -131,7 +131,7 @@ export default function DataTable({
             ) : filteredRows.length === 0 ? (
               <tr>
                 <td
-                  className="px-4 py-6 text-center text-gray-500 dark:text-gray-400"
+                  className="px-4 py-6 text-center text-gray-500 "
                   colSpan={columns.length}
                 >
                   {emptyLabel}
@@ -143,7 +143,7 @@ export default function DataTable({
                   {columns.map((column) => (
                     <td
                       key={column.key}
-                      className={`px-4 py-3 text-gray-800 dark:text-gray-100 ${column.className || ''}`}
+                      className={`px-4 py-3 text-gray-800  ${column.className || ''}`}
                     >
                       {row[column.key]}
                     </td>
@@ -154,20 +154,20 @@ export default function DataTable({
           </tbody>
         </table>
       </div>
-      <div className="flex items-center justify-between px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+      <div className="flex items-center justify-between px-4 py-3 text-sm text-gray-600 ">
         <div>
           Page {currentPage} of {totalPages}
         </div>
         <div className="flex items-center gap-2">
           <button
-            className="px-2 py-1 rounded border border-gray-200 dark:border-gray-700 disabled:opacity-50"
+            className="px-2 py-1 rounded border border-gray-200  disabled:opacity-50"
             onClick={() => setPage(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
           >
             Prev
           </button>
           <button
-            className="px-2 py-1 rounded border border-gray-200 dark:border-gray-700 disabled:opacity-50"
+            className="px-2 py-1 rounded border border-gray-200  disabled:opacity-50"
             onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
           >
