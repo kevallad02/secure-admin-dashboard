@@ -7,22 +7,29 @@ import { useAuth } from '../context/AuthContext'
 export default function Users() {
   const [users, setUsers] = useState<Profile[]>([])
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [roleFilter, setRoleFilter] = useState('all')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [page, setPage] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+  const pageSize = 10
   const hasLoadedRef = useRef(false)
-  const { isAdmin, loading: authLoading } = useAuth()
+  const { isAdmin, isOwner, loading: authLoading } = useAuth()
 
   useEffect(() => {
     if (authLoading) return
     if (hasLoadedRef.current) return
     hasLoadedRef.current = true
-    loadUsers(isAdmin)
-  }, [authLoading, isAdmin])
+    loadUsers(isAdmin || isOwner)
+  }, [authLoading, isAdmin, isOwner])
 
   const loadUsers = async (adminStatus: boolean) => {
     try {
       setLoading(true)
       if (adminStatus) {
-        const allUsers = await profileService.getAllProfiles()
-        setUsers(allUsers)
+        const { data, count } = await profileService.getProfilesPaged(page, pageSize)
+        setUsers(data)
+        setTotalCount(count)
       }
     } catch (error) {
       console.error('Error loading users:', error)
@@ -31,7 +38,35 @@ export default function Users() {
     }
   }
 
-  if (!isAdmin && !loading) {
+  const filteredUsers = users.filter((user) => {
+    const term = search.trim().toLowerCase()
+    const matchesSearch = term
+      ? (user.email || '').toLowerCase().includes(term) || user.id.toLowerCase().includes(term)
+      : true
+    const matchesRole = roleFilter === 'all' ? true : user.role === roleFilter
+    const matchesStatus = statusFilter === 'all'
+      ? true
+      : statusFilter === 'active'
+        ? user.is_active
+        : !user.is_active
+    return matchesSearch && matchesRole && matchesStatus
+  })
+
+  useEffect(() => {
+    setPage(1)
+  }, [search, roleFilter, statusFilter])
+
+  useEffect(() => {
+    if (authLoading) return
+    if (!isAdmin && !isOwner) return
+    loadUsers(true)
+  }, [page, authLoading, isAdmin, isOwner])
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))
+  const currentPage = Math.min(page, totalPages)
+  const pagedUsers = filteredUsers
+
+  if (!isAdmin && !isOwner && !loading) {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center h-64">
@@ -71,13 +106,34 @@ export default function Users() {
               <input
                 type="text"
                 placeholder="Search users..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
-            <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+            <select
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="all">All roles</option>
+              <option value="owner">Owner</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="all">All status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
               <FunnelIcon className="h-5 w-5 mr-2" />
-              Filters
-            </button>
+              {filteredUsers.length} results
+            </div>
           </div>
         </div>
 
@@ -111,13 +167,13 @@ export default function Users() {
                       Loading users...
                     </td>
                   </tr>
-                ) : users.length === 0 ? (
+                ) : filteredUsers.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
                       No users found
                     </td>
                   </tr>
-                ) : users.map((user) => (
+                ) : pagedUsers.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -172,36 +228,25 @@ export default function Users() {
           </div>
         </div>
 
-        {/* Pagination */}
-        <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">
-          <div className="flex-1 flex justify-between sm:hidden">
-            <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              Previous
+        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+          <div>
+            Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} results
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              className="px-2 py-1 rounded border border-gray-200 dark:border-gray-700 disabled:opacity-50"
+              onClick={() => setPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+            >
+              Prev
             </button>
-            <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <button
+              className="px-2 py-1 rounded border border-gray-200 dark:border-gray-700 disabled:opacity-50"
+              onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+            >
               Next
             </button>
-          </div>
-          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                Showing <span className="font-medium">1</span> to <span className="font-medium">{users.length}</span> of{' '}
-                <span className="font-medium">{users.length}</span> results
-              </p>
-            </div>
-            <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  Previous
-                </button>
-                <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-primary-50 dark:bg-primary-900/20 text-sm font-medium text-primary-600 dark:text-primary-400">
-                  1
-                </button>
-                <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  Next
-                </button>
-              </nav>
-            </div>
           </div>
         </div>
       </div>

@@ -9,6 +9,23 @@ export interface ActivityLog {
 }
 
 export const activityLogService = {
+  async getLogsPaged(page: number, pageSize: number): Promise<{ data: ActivityLog[]; count: number }> {
+    const from = (page - 1) * pageSize
+    const to = from + pageSize - 1
+
+    const { data, error, count } = await supabase
+      .from('activity_logs')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(from, to)
+
+    if (error) {
+      console.error('Error fetching logs:', error)
+      return { data: [], count: 0 }
+    }
+
+    return { data: data || [], count: count || 0 }
+  },
   // Get all activity logs (admin only)
   async getAllLogs(): Promise<ActivityLog[]> {
     const { data, error } = await supabase

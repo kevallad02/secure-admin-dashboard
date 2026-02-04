@@ -8,6 +8,7 @@ export default function Signup() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [orgName, setOrgName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -34,6 +35,11 @@ export default function Signup() {
       const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            org_name: orgName.trim() || 'My Organization',
+          },
+        },
       })
 
       if (error) throw error
@@ -96,6 +102,21 @@ export default function Signup() {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSignup}>
           <div className="rounded-md shadow-sm space-y-4">
+            <div>
+              <label htmlFor="org-name" className="sr-only">
+                Organization name
+              </label>
+              <input
+                id="org-name"
+                name="orgName"
+                type="text"
+                required
+                value={orgName}
+                onChange={(e) => setOrgName(e.target.value)}
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm app-shell"
+                placeholder="Organization name"
+              />
+            </div>
             <div>
               <label htmlFor="signup-email" className="sr-only">
                 Email address

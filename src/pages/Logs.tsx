@@ -7,22 +7,29 @@ import { useAuth } from '../context/AuthContext'
 export default function Logs() {
   const [logs, setLogs] = useState<ActivityLog[]>([])
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [page, setPage] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+  const [toast, setToast] = useState<string | null>(null)
+  const pageSize = 10
   const hasLoadedRef = useRef(false)
-  const { isAdmin, loading: authLoading } = useAuth()
+  const { isAdmin, isOwner, loading: authLoading } = useAuth()
 
   useEffect(() => {
     if (authLoading) return
     if (hasLoadedRef.current) return
     hasLoadedRef.current = true
-    loadLogs(isAdmin)
-  }, [authLoading, isAdmin])
+    loadLogs(isAdmin || isOwner)
+  }, [authLoading, isAdmin, isOwner])
 
   const loadLogs = async (adminStatus: boolean) => {
     try {
       setLoading(true)
       if (adminStatus) {
-        const allLogs = await activityLogService.getAllLogs()
-        setLogs(allLogs)
+        const { data, count } = await activityLogService.getLogsPaged(page, pageSize)
+        setLogs(data)
+        setTotalCount(count)
       }
     } catch (error) {
       console.error('Error loading logs:', error)
@@ -30,6 +37,69 @@ export default function Logs() {
       setLoading(false)
     }
   }
+
+  const filteredLogs = logs.filter((log) => {
+    const term = search.trim().toLowerCase()
+    const matchesSearch = term
+      ? log.action.toLowerCase().includes(term) ||
+        log.user_id.toLowerCase().includes(term) ||
+        log.ip_address.toLowerCase().includes(term)
+      : true
+    const status = log.action.toLowerCase()
+    const matchesStatus = statusFilter === 'all'
+      ? true
+      : statusFilter === 'error'
+        ? status.includes('error') || status.includes('failed')
+        : statusFilter === 'success'
+          ? status.includes('success') || status.includes('completed')
+          : statusFilter === 'info'
+            ? true
+            : true
+    return matchesSearch && matchesStatus
+  })
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))
+  const currentPage = Math.min(page, totalPages)
+  const pagedLogs = filteredLogs
+
+  const exportCsv = () => {
+    const headers = ['Action', 'User', 'IP Address', 'Timestamp']
+    const rows = filteredLogs.map((log) => [
+      log.action,
+      log.user_id,
+      log.ip_address,
+      new Date(log.created_at).toISOString(),
+    ])
+
+    const csvContent = [headers, ...rows]
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `activity-logs-${new Date().toISOString().slice(0, 10)}.csv`
+    link.click()
+    URL.revokeObjectURL(url)
+    setToast('CSV exported successfully.')
+  }
+
+  useEffect(() => {
+    setPage(1)
+  }, [search, statusFilter])
+
+  useEffect(() => {
+    if (!toast) return
+    const timer = setTimeout(() => setToast(null), 2500)
+    return () => clearTimeout(timer)
+  }, [toast])
+
+  useEffect(() => {
+    if (authLoading) return
+    if (!isAdmin && !isOwner) return
+    loadLogs(true)
+  }, [page, authLoading, isAdmin, isOwner])
 
   if (loading) {
     return (
@@ -45,7 +115,7 @@ export default function Logs() {
     )
   }
 
-  if (!isAdmin) {
+  if (!isAdmin && !isOwner) {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center h-64">
@@ -65,9 +135,14 @@ export default function Logs() {
     )
   }
 
-return (
+  return (
     <DashboardLayout>
       <div className="space-y-6">
+        {toast && (
+          <div className="rounded-md bg-green-50 dark:bg-green-900/20 p-3 text-sm text-green-800 dark:text-green-200">
+            {toast}
+          </div>
+        )}
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -76,7 +151,10 @@ return (
               View and monitor all system activities
             </p>
           </div>
-          <button className="mt-4 sm:mt-0 px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors">
+          <button
+            onClick={exportCsv}
+            className="mt-4 sm:mt-0 px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
+          >
             Export Logs
           </button>
         </div>
@@ -89,19 +167,25 @@ return (
               <input
                 type="text"
                 placeholder="Search logs..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
-            <select className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
-              <option>All Status</option>
-              <option>Success</option>
-              <option>Error</option>
-              <option>Info</option>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="all">All Status</option>
+              <option value="success">Success</option>
+              <option value="error">Error</option>
+              <option value="info">Info</option>
             </select>
-            <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
               <FunnelIcon className="h-5 w-5 mr-2" />
-              More Filters
-            </button>
+              {filteredLogs.length} results
+            </div>
           </div>
         </div>
 
@@ -138,13 +222,13 @@ return (
                       Loading logs...
                     </td>
                   </tr>
-                ) : logs.length === 0 ? (
+                ) : filteredLogs.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
                       No activity logs found
                     </td>
                   </tr>
-                ) : logs.map((log) => (
+                ) : pagedLogs.map((log) => (
                   <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900 dark:text-white">
@@ -179,36 +263,25 @@ return (
           </div>
         </div>
 
-        {/* Pagination */}
-        <div className="app-shell shadow rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">
-          <div className="flex-1 flex justify-between sm:hidden">
-            <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              Previous
+        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+          <div>
+            Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} results
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              className="px-2 py-1 rounded border border-gray-200 dark:border-gray-700 disabled:opacity-50"
+              onClick={() => setPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+            >
+              Prev
             </button>
-            <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <button
+              className="px-2 py-1 rounded border border-gray-200 dark:border-gray-700 disabled:opacity-50"
+              onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+            >
               Next
             </button>
-          </div>
-          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                Showing <span className="font-medium">1</span> to <span className="font-medium">{logs.length}</span> of{' '}
-                <span className="font-medium">{logs.length}</span> results
-              </p>
-            </div>
-            <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  Previous
-                </button>
-                <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-primary-50 dark:bg-primary-900/20 text-sm font-medium text-primary-600 dark:text-primary-400">
-                  1
-                </button>
-                <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  Next
-                </button>
-              </nav>
-            </div>
           </div>
         </div>
       </div>

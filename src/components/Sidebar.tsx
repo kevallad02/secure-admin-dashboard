@@ -2,16 +2,33 @@ import { NavLink } from 'react-router-dom'
 import { 
   HomeIcon, 
   UsersIcon, 
-  ClipboardDocumentListIcon 
+  ClipboardDocumentListIcon,
+  CurrencyDollarIcon,
+  CubeIcon,
+  ShoppingCartIcon,
+  DocumentTextIcon,
+  BuildingStorefrontIcon,
+  ChartPieIcon,
+  Cog6ToothIcon
 } from '@heroicons/react/24/outline'
+import { useAuth } from '../context/AuthContext'
 
 const menuItems = [
   { name: 'Dashboard', path: '/dashboard', icon: HomeIcon },
+  { name: 'Inventory', path: '/inventory', icon: CubeIcon },
+  { name: 'Purchases', path: '/purchases', icon: ShoppingCartIcon },
+  { name: 'Sales', path: '/sales', icon: DocumentTextIcon },
+  { name: 'Rentals', path: '/rentals', icon: BuildingStorefrontIcon },
+  { name: 'Billing', path: '/billing', icon: CurrencyDollarIcon },
+  { name: 'Reports', path: '/reports', icon: ChartPieIcon },
+  { name: 'Settings', path: '/settings', icon: Cog6ToothIcon },
   { name: 'Users', path: '/users', icon: UsersIcon },
   { name: 'Logs', path: '/logs', icon: ClipboardDocumentListIcon },
+  { name: 'Tax Templates', path: '/tax-templates', icon: CurrencyDollarIcon },
 ]
 
 export default function Sidebar() {
+  const { canManageTaxes } = useAuth()
   return (
     <div className="flex flex-col w-64 app-shell border-r border-gray-200 dark:border-gray-700 h-screen sticky top-0">
       {/* Logo */}
@@ -29,7 +46,9 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto py-4 px-3">
         <div className="space-y-1">
-          {menuItems.map((item) => (
+          {menuItems
+            .filter((item) => item.path !== '/tax-templates' || canManageTaxes)
+            .map((item) => (
             <NavLink
               key={item.path}
               to={item.path}

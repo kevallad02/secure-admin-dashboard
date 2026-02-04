@@ -9,6 +9,23 @@ export interface Profile {
 }
 
 export const profileService = {
+  async getProfilesPaged(page: number, pageSize: number): Promise<{ data: Profile[]; count: number }> {
+    const from = (page - 1) * pageSize
+    const to = from + pageSize - 1
+
+    const { data, error, count } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(from, to)
+
+    if (error) {
+      console.error('Error fetching profiles:', error)
+      return { data: [], count: 0 }
+    }
+
+    return { data: data || [], count: count || 0 }
+  },
   // Get current user's profile
   async getCurrentProfile(): Promise<Profile | null> {
     const { data: { user } } = await supabase.auth.getUser()

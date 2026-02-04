@@ -1,13 +1,19 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { supabase } from '../supabaseClient'
 import { profileService, type Profile } from '../services/profileService'
+import { orgService, type OrgSummary } from '../services/orgService'
 
 interface AuthContextType {
   user: any | null
   session: any | null
   loading: boolean
   profile: Profile | null
+  org: OrgSummary | null
+  onboardingComplete: boolean
   isAdmin: boolean
+  isOwner: boolean
+  canManageTaxes: boolean
+  refreshOrg: () => Promise<void>
   signOut: () => Promise<void>
 }
 
@@ -18,6 +24,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState<Profile | null>(null)
+  const [org, setOrg] = useState<OrgSummary | null>(null)
+  const [onboardingComplete, setOnboardingComplete] = useState(false)
   const lastTokenRef = useRef<string | null>(null)
 
   useEffect(() => {
@@ -52,8 +60,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setProfile(null)
           }
         }
+
+        try {
+          const userOrg = await orgService.getPrimaryOrgForUser(nextSession.user.id)
+          if (isMounted) {
+            setOrg(userOrg)
+            setOnboardingComplete(Boolean(userOrg?.onboarding_completed_at))
+          }
+        } catch (error) {
+          console.error('Error loading org:', error)
+          if (isMounted) {
+            setOrg(null)
+            setOnboardingComplete(false)
+          }
+        }
       } else if (isMounted) {
         setProfile(null)
+        setOrg(null)
+        setOnboardingComplete(false)
       }
 
       if (isMounted) {
@@ -89,12 +113,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut()
   }
 
+  const refreshOrg = async () => {
+    if (!session?.user) return
+    const userOrg = await orgService.getPrimaryOrgForUser(session.user.id)
+    setOrg(userOrg)
+    setOnboardingComplete(Boolean(userOrg?.onboarding_completed_at))
+  }
+
   const value = {
     user,
     session,
     loading,
     profile,
+    org,
+    onboardingComplete,
     isAdmin: profile?.role === 'admin',
+    isOwner: profile?.role === 'owner',
+    canManageTaxes: profile?.role === 'admin' || profile?.role === 'owner',
+    refreshOrg,
     signOut,
   }
 
