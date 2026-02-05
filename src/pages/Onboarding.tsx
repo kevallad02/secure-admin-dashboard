@@ -273,11 +273,11 @@ export default function Onboarding() {
   return (
     <DashboardLayout>
       <div className="max-w-3xl mx-auto space-y-6">
-        <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
-          <h1 className="text-2xl font-semibold text-gray-900 ">
+        <div className="app-shell shadow rounded-lg border border-gray-200 p-6">
+          <h1 className="text-2xl font-semibold text-gray-900">
             Let’s set up your workspace
           </h1>
-          <p className="text-sm text-gray-600  mt-1">
+          <p className="text-sm text-gray-600 mt-1">
             Configure basics and add your first product.
           </p>
         </div>
@@ -285,13 +285,13 @@ export default function Onboarding() {
         {step === 1 ? (
           <form
             onSubmit={handleStepOne}
-          className="app-shell shadow rounded-lg border border-gray-200  p-6 space-y-6"
+          className="app-shell shadow rounded-lg border border-gray-200 p-6 space-y-6"
           >
           <div>
-            <h2 className="text-lg font-medium text-gray-900 ">Company settings</h2>
+            <h2 className="text-lg font-medium text-gray-900">Company settings</h2>
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 ">
+                <label className="block text-sm font-medium text-gray-700">
                   Country
                 </label>
                 <select
@@ -300,7 +300,7 @@ export default function Onboarding() {
                     const nextCountry = e.target.value
                     setCountryCode(nextCountry)
                   }}
-                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                 >
                   {countryOptions.map((country) => (
                     <option key={country.code} value={country.code}>{country.label}</option>
@@ -308,13 +308,13 @@ export default function Onboarding() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 ">
+                <label className="block text-sm font-medium text-gray-700">
                   Currency
                 </label>
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
-                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                 >
                   {currencyOptions.map((code) => (
                     <option key={code} value={code}>{code}</option>
@@ -322,7 +322,7 @@ export default function Onboarding() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 ">
+                <label className="block text-sm font-medium text-gray-700">
                   Tax rate (%)
                 </label>
                 <input
@@ -331,11 +331,11 @@ export default function Onboarding() {
                   min="0"
                   value={taxRate}
                   onChange={(e) => setTaxRate(Number(e.target.value))}
-                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 ">
+                <label className="block text-sm font-medium text-gray-700">
                   Tax template
                 </label>
                 <select
@@ -347,7 +347,7 @@ export default function Onboarding() {
                       applyTemplate(nextId)
                     }
                   }}
-                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                 >
                   <option value="">Custom</option>
                   {taxTemplates
@@ -358,7 +358,7 @@ export default function Onboarding() {
                 </select>
               </div>
               <div className="flex items-end">
-                <label className="inline-flex items-center text-sm text-gray-700 ">
+                <label className="inline-flex items-center text-sm text-gray-700">
                   <input
                     type="checkbox"
                     checked={taxIncluded}
@@ -372,38 +372,38 @@ export default function Onboarding() {
           </div>
 
           <div>
-            <h2 className="text-lg font-medium text-gray-900 ">First product</h2>
+            <h2 className="text-lg font-medium text-gray-900">First product</h2>
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 ">
+                <label className="block text-sm font-medium text-gray-700">
                   Product name
                 </label>
                 <input
                   type="text"
                   value={productName}
                   onChange={(e) => setProductName(e.target.value)}
-                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 ">
+                <label className="block text-sm font-medium text-gray-700">
                   SKU (optional)
                 </label>
                 <input
                   type="text"
                   value={productSku}
                   onChange={(e) => setProductSku(e.target.value)}
-                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 ">
+                <label className="block text-sm font-medium text-gray-700">
                   Type
                 </label>
                 <select
                   value={productType}
                   onChange={(e) => setProductType(e.target.value)}
-                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                 >
                   {productTypes.map((type) => (
                     <option key={type.value} value={type.value}>{type.label}</option>
@@ -411,13 +411,13 @@ export default function Onboarding() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 ">
+                <label className="block text-sm font-medium text-gray-700">
                   Unit
                 </label>
                 <select
                   value={unitId || ''}
                   onChange={(e) => setUnitId(e.target.value || null)}
-                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                 >
                   {units.map((unit) => (
                     <option key={unit.id} value={unit.id}>
@@ -427,13 +427,13 @@ export default function Onboarding() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 ">
+                <label className="block text-sm font-medium text-gray-700">
                   Category
                 </label>
                 <select
                   value={categoryId || ''}
                   onChange={(e) => setCategoryId(e.target.value || null)}
-                  className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                 >
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -441,7 +441,7 @@ export default function Onboarding() {
                 </select>
               </div>
               <div className="flex items-end">
-                <label className="inline-flex items-center text-sm text-gray-700 ">
+                <label className="inline-flex items-center text-sm text-gray-700">
                   <input
                     type="checkbox"
                     checked={trackInventory}
@@ -455,8 +455,8 @@ export default function Onboarding() {
           </div>
 
           {error && (
-            <div className="rounded-md bg-red-50  p-4">
-              <p className="text-sm text-red-800 ">{error}</p>
+            <div className="rounded-md bg-red-50 p-4">
+              <p className="text-sm text-red-800">{error}</p>
             </div>
           )}
 
@@ -465,7 +465,7 @@ export default function Onboarding() {
               type="button"
               onClick={handleSkip}
               disabled={saving || loading}
-              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
             >
               Skip onboarding
             </button>
@@ -481,24 +481,24 @@ export default function Onboarding() {
         ) : (
           <form
             onSubmit={handleStepTwo}
-            className="app-shell shadow rounded-lg border border-gray-200  p-6 space-y-6"
+            className="app-shell shadow rounded-lg border border-gray-200 p-6 space-y-6"
           >
             <div>
-              <h2 className="text-lg font-medium text-gray-900 ">Warehouse setup</h2>
+              <h2 className="text-lg font-medium text-gray-900">Warehouse setup</h2>
               <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 ">
+                  <label className="block text-sm font-medium text-gray-700">
                     Location name
                   </label>
                   <input
                     type="text"
                     value={locationName}
                     onChange={(e) => setLocationName(e.target.value)}
-                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                    className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 ">
+                  <label className="block text-sm font-medium text-gray-700">
                     Initial stock
                   </label>
                   <input
@@ -506,15 +506,15 @@ export default function Onboarding() {
                     min="0"
                     value={initialStock}
                     onChange={(e) => setInitialStock(Number(e.target.value))}
-                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                    className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                   />
                 </div>
               </div>
             </div>
 
             {error && (
-              <div className="rounded-md bg-red-50  p-4">
-                <p className="text-sm text-red-800 ">{error}</p>
+              <div className="rounded-md bg-red-50 p-4">
+                <p className="text-sm text-red-800">{error}</p>
               </div>
             )}
 
@@ -523,7 +523,7 @@ export default function Onboarding() {
                 type="button"
                 onClick={() => setStep(1)}
                 disabled={saving || loading}
-                className="text-sm font-medium text-gray-600  hover:text-gray-900 "
+                className="text-sm font-medium text-gray-600 hover:text-gray-900"
               >
                 Back
               </button>

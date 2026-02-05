@@ -18,19 +18,19 @@ export default function Modal({ open, title, children, onClose, footer }: ModalP
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="relative w-full max-w-lg rounded-lg bg-white  shadow-lg border border-gray-200 ">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 ">
-          <h2 className="text-lg font-semibold text-gray-900 ">{title}</h2>
+      <div className="relative w-full max-w-lg rounded-lg bg-white shadow-lg border border-gray-200">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-900  "
+            className="text-gray-500 hover:text-gray-900"
           >
             ✕
           </button>
         </div>
         <div className="px-6 py-5">{children}</div>
         {footer && (
-          <div className="px-6 py-4 border-t border-gray-200  flex items-center justify-end gap-3">
+          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3">
             {footer}
           </div>
         )}

@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import { supabase } from '../supabaseClient'
 import { profileService, type Profile } from '../services/profileService'
 import { orgService, type OrgSummary } from '../services/orgService'
+import { applyBranding } from '../utils/branding'
 
 interface AuthContextType {
   user: any | null
@@ -108,6 +109,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       subscription.unsubscribe()
     }
   }, [])
+
+  useEffect(() => {
+    applyBranding(org?.brand_color ?? null)
+  }, [org?.brand_color])
 
   const signOut = async () => {
     await supabase.auth.signOut()

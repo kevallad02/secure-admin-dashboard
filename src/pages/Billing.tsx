@@ -425,20 +425,20 @@ export default function Billing() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="app-shell shadow rounded-lg border border-gray-200  p-4"
+              className="app-shell shadow rounded-lg border border-gray-200 p-4"
             >
-              <p className="text-xs uppercase tracking-wide text-gray-500 ">{stat.label}</p>
-              <p className="mt-2 text-2xl font-semibold text-gray-900 ">{stat.value}</p>
+              <p className="text-xs uppercase tracking-wide text-gray-500">{stat.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-gray-900">{stat.value}</p>
             </div>
           ))}
         </div>
 
         <div className="space-y-6">
-          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
+          <div className="app-shell shadow rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 ">Invoice List</h2>
-                <p className="text-sm text-gray-500 ">Open, paid, and overdue invoices across customers.</p>
+                <h2 className="text-lg font-semibold text-gray-900">Invoice List</h2>
+                <p className="text-sm text-gray-500">Open, paid, and overdue invoices across customers.</p>
               </div>
               <button
                 className="text-sm font-medium text-primary-600 hover:text-primary-700"
@@ -466,10 +466,10 @@ export default function Billing() {
             </div>
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
+          <div className="app-shell shadow rounded-lg border border-gray-200 p-6">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 ">Payment History</h2>
-              <p className="text-sm text-gray-500 ">All posted payments, deposits, and adjustments.</p>
+              <h2 className="text-lg font-semibold text-gray-900">Payment History</h2>
+              <p className="text-sm text-gray-500">All posted payments, deposits, and adjustments.</p>
             </div>
             <div className="mt-4">
               <DataTable
@@ -483,10 +483,10 @@ export default function Billing() {
             </div>
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
+          <div className="app-shell shadow rounded-lg border border-gray-200 p-6">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 ">Recurring Schedules</h2>
-              <p className="text-sm text-gray-500 ">Contracts and subscriptions queued for automated billing.</p>
+              <h2 className="text-lg font-semibold text-gray-900">Recurring Schedules</h2>
+              <p className="text-sm text-gray-500">Contracts and subscriptions queued for automated billing.</p>
             </div>
             <div className="mt-4">
               <DataTable
@@ -500,15 +500,15 @@ export default function Billing() {
             </div>
           </div>
 
-          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
+          <div className="app-shell shadow rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 ">Taxes & Fees</h2>
-                <p className="text-sm text-gray-500 ">Tax rules and service fees applied to invoices.</p>
+                <h2 className="text-lg font-semibold text-gray-900">Taxes & Fees</h2>
+                <p className="text-sm text-gray-500">Tax rules and service fees applied to invoices.</p>
               </div>
               <Link
                 to="/tax-templates"
-                className="text-sm font-medium text-gray-600 hover:text-gray-900  "
+                className="text-sm font-medium text-gray-600 hover:text-gray-900"
               >
                 Full settings
               </Link>
@@ -524,20 +524,20 @@ export default function Billing() {
               />
             </div>
 
-            <div className="mt-6 border-t border-gray-200  pt-5">
+            <div className="mt-6 border-t border-gray-200 pt-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 ">Add tax / fee</h3>
-                  <p className="text-xs text-gray-500 ">Create tax rules directly from Billing.</p>
+                  <h3 className="text-sm font-semibold text-gray-900">Add tax / fee</h3>
+                  <p className="text-xs text-gray-500">Create tax rules directly from Billing.</p>
                 </div>
               </div>
               <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-4">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 ">Country</label>
+                  <label className="block text-xs font-medium text-gray-600">Country</label>
                   <select
                     value={taxForm.country_code}
                     onChange={(e) => setTaxForm({ ...taxForm, country_code: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                    className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                   >
                     {['US', 'CA', 'GB', 'AU', 'DE', 'FR'].map((code) => (
                       <option key={code} value={code}>{code}</option>
@@ -545,28 +545,28 @@ export default function Billing() {
                   </select>
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-medium text-gray-600 ">Name</label>
+                  <label className="block text-xs font-medium text-gray-600">Name</label>
                   <input
                     type="text"
                     value={taxForm.name}
                     onChange={(e) => setTaxForm({ ...taxForm, name: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                    className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                     placeholder="Sales tax, service fee, etc."
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 ">Rate (%)</label>
+                  <label className="block text-xs font-medium text-gray-600">Rate (%)</label>
                   <input
                     type="number"
                     step="0.01"
                     min="0"
                     value={taxForm.rate}
                     onChange={(e) => setTaxForm({ ...taxForm, rate: Number(e.target.value) })}
-                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                    className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                   />
                 </div>
               </div>
-              <label className="mt-3 inline-flex items-center text-xs text-gray-600 ">
+              <label className="mt-3 inline-flex items-center text-xs text-gray-600">
                 <input
                   type="checkbox"
                   checked={taxForm.tax_included}
@@ -576,8 +576,8 @@ export default function Billing() {
                 Prices include tax
               </label>
             {taxError && (
-              <div className="mt-3 rounded-md bg-red-50  p-3">
-                <p className="text-sm text-red-800 ">{taxError}</p>
+              <div className="mt-3 rounded-md bg-red-50 p-3">
+                <p className="text-sm text-red-800">{taxError}</p>
               </div>
             )}
             <div className="mt-4 flex items-center gap-3">
@@ -618,7 +618,7 @@ export default function Billing() {
               </button>
               {taxForm.id && (
                 <button
-                  className="text-xs font-medium text-gray-600  hover:text-gray-900 "
+                  className="text-xs font-medium text-gray-600 hover:text-gray-900"
                   onClick={() => {
                     setTaxForm({ id: '', country_code: 'US', name: '', rate: 0, tax_included: false })
                     setTaxError(null)
@@ -641,7 +641,7 @@ export default function Billing() {
           <>
             <button
               onClick={() => setInvoiceModalOpen(false)}
-              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
             >
               Cancel
             </button>
@@ -684,11 +684,11 @@ export default function Billing() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Customer</label>
+            <label className="block text-sm font-medium text-gray-700">Customer</label>
             <select
               value={invoiceForm.customer_id}
               onChange={(e) => setInvoiceForm({ ...invoiceForm, customer_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             >
               <option value="">Select customer</option>
               {customers.map((customer) => (
@@ -698,11 +698,11 @@ export default function Billing() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 ">Status</label>
+              <label className="block text-sm font-medium text-gray-700">Status</label>
               <select
                 value={invoiceForm.status}
                 onChange={(e) => setInvoiceForm({ ...invoiceForm, status: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
               >
                 <option value="draft">Draft</option>
                 <option value="open">Open</option>
@@ -710,49 +710,49 @@ export default function Billing() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 ">Total</label>
-              <div className="mt-1 w-full rounded-md border border-gray-200  bg-gray-50  px-3 py-2 text-sm text-gray-900 ">
+              <label className="block text-sm font-medium text-gray-700">Total</label>
+              <div className="mt-1 w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900">
                 ${Number(displayInvoiceTotal || 0).toLocaleString()}
               </div>
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Due date</label>
+            <label className="block text-sm font-medium text-gray-700">Due date</label>
             <input
               type="date"
               value={invoiceForm.due_date}
               onChange={(e) => setInvoiceForm({ ...invoiceForm, due_date: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             />
           </div>
         </div>
 
-        <div className="mt-6 border-t border-gray-200  pt-5">
+        <div className="mt-6 border-t border-gray-200 pt-5">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 ">Line items</h3>
-              <p className="text-xs text-gray-500 ">Products, quantities, and pricing.</p>
+              <h3 className="text-sm font-semibold text-gray-900">Line items</h3>
+              <p className="text-xs text-gray-500">Products, quantities, and pricing.</p>
             </div>
             {!editingInvoice && (
-              <span className="text-xs text-gray-500 ">Save invoice to add items.</span>
+              <span className="text-xs text-gray-500">Save invoice to add items.</span>
             )}
           </div>
 
           {editingInvoice && (
             <div className="mt-4 space-y-3">
               {linesLoading ? (
-                <p className="text-xs text-gray-500 ">Loading line items...</p>
+                <p className="text-xs text-gray-500">Loading line items...</p>
               ) : invoiceLines.length === 0 ? (
-                <p className="text-xs text-gray-500 ">No line items yet.</p>
+                <p className="text-xs text-gray-500">No line items yet.</p>
               ) : (
                 <div className="space-y-2">
                   {invoiceLines.map((line) => (
-                    <div key={line.id} className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200  px-3 py-2">
+                    <div key={line.id} className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200 px-3 py-2">
                       <div>
-                        <p className="text-sm font-medium text-gray-900 ">
+                        <p className="text-sm font-medium text-gray-900">
                           {productName.get(line.product_id) || 'Item'}
                         </p>
-                        <p className="text-xs text-gray-500 ">
+                        <p className="text-xs text-gray-500">
                           {line.qty} × ${Number(line.unit_price || 0).toLocaleString()}
                         </p>
                       </div>
@@ -789,11 +789,11 @@ export default function Billing() {
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 ">Product</label>
+                  <label className="block text-xs font-medium text-gray-600">Product</label>
                   <select
                     value={lineForm.product_id}
                     onChange={(e) => setLineForm({ ...lineForm, product_id: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                    className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                   >
                     <option value="">Select product</option>
                     {products.map((product) => (
@@ -802,23 +802,23 @@ export default function Billing() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 ">Qty</label>
+                  <label className="block text-xs font-medium text-gray-600">Qty</label>
                   <input
                     type="number"
                     min="1"
                     value={lineForm.qty}
                     onChange={(e) => setLineForm({ ...lineForm, qty: Number(e.target.value) })}
-                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                    className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 ">Unit price</label>
+                  <label className="block text-xs font-medium text-gray-600">Unit price</label>
                   <input
                     type="number"
                     min="0"
                     value={lineForm.unit_price}
                     onChange={(e) => setLineForm({ ...lineForm, unit_price: Number(e.target.value) })}
-                    className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                    className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
                   />
                 </div>
               </div>
@@ -853,7 +853,7 @@ export default function Billing() {
                 </button>
                 {editingLine && (
                   <button
-                    className="text-xs font-medium text-gray-600  hover:text-gray-900 "
+                    className="text-xs font-medium text-gray-600 hover:text-gray-900"
                     onClick={() => {
                       setEditingLine(null)
                       setLineForm({ product_id: '', qty: 1, unit_price: 0 })
@@ -883,19 +883,19 @@ export default function Billing() {
       >
         {selectedInvoice ? (
           <div className="space-y-4">
-            <div className="flex items-center justify-between text-sm text-gray-600 ">
+            <div className="flex items-center justify-between text-sm text-gray-600">
               <span>Invoice #{selectedInvoice.id.slice(0, 8)}</span>
               <span>Total: ${Number(selectedInvoice.total || 0).toLocaleString()}</span>
             </div>
-            <div className="text-sm text-gray-600 ">
+            <div className="text-sm text-gray-600">
               Customer: {customerName.get(selectedInvoice.customer_id) || '—'}
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-700  mb-2">Line Items</h4>
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Line Items</h4>
               {linesLoading ? (
-                <p className="text-sm text-gray-500 ">Loading...</p>
+                <p className="text-sm text-gray-500">Loading...</p>
               ) : invoiceLines.length === 0 ? (
-                <p className="text-sm text-gray-500 ">No line items.</p>
+                <p className="text-sm text-gray-500">No line items.</p>
               ) : (
                 <div className="space-y-2">
                   {invoiceLines.map((line) => (
@@ -908,9 +908,9 @@ export default function Billing() {
               )}
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-700  mb-2">Payments</h4>
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Payments</h4>
               {payments.filter((p) => p.invoice_id === selectedInvoice.id).length === 0 ? (
-                <p className="text-sm text-gray-500 ">No payments recorded.</p>
+                <p className="text-sm text-gray-500">No payments recorded.</p>
               ) : (
                 <div className="space-y-2">
                   {payments.filter((p) => p.invoice_id === selectedInvoice.id).map((payment) => (
@@ -924,7 +924,7 @@ export default function Billing() {
             </div>
           </div>
         ) : (
-          <p className="text-sm text-gray-500 ">No invoice selected.</p>
+          <p className="text-sm text-gray-500">No invoice selected.</p>
         )}
       </Modal>
 
@@ -936,7 +936,7 @@ export default function Billing() {
           <>
             <button
               onClick={() => setPaymentModalOpen(false)}
-              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
             >
               Cancel
             </button>
@@ -963,11 +963,11 @@ export default function Billing() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Invoice</label>
+            <label className="block text-sm font-medium text-gray-700">Invoice</label>
             <select
               value={paymentForm.invoice_id}
               onChange={(e) => setPaymentForm({ ...paymentForm, invoice_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             >
               <option value="">Select invoice</option>
               {invoices.map((invoice) => (
@@ -977,21 +977,21 @@ export default function Billing() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 ">Amount</label>
+              <label className="block text-sm font-medium text-gray-700">Amount</label>
               <input
                 type="number"
                 min="0"
                 value={paymentForm.amount}
                 onChange={(e) => setPaymentForm({ ...paymentForm, amount: Number(e.target.value) })}
-                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 ">Method</label>
+              <label className="block text-sm font-medium text-gray-700">Method</label>
               <select
                 value={paymentForm.method}
                 onChange={(e) => setPaymentForm({ ...paymentForm, method: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
               >
                 <option value="cash">Cash</option>
                 <option value="card">Card</option>
@@ -1002,21 +1002,21 @@ export default function Billing() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Paid at</label>
+            <label className="block text-sm font-medium text-gray-700">Paid at</label>
             <input
               type="datetime-local"
               value={paymentForm.paid_at}
               onChange={(e) => setPaymentForm({ ...paymentForm, paid_at: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Notes</label>
+            <label className="block text-sm font-medium text-gray-700">Notes</label>
             <input
               type="text"
               value={paymentForm.notes}
               onChange={(e) => setPaymentForm({ ...paymentForm, notes: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             />
           </div>
         </div>

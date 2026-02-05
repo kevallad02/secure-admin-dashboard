@@ -3,6 +3,7 @@ import DashboardLayout from '../components/DashboardLayout'
 import { MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline'
 import { orgMembersService, type OrgMember } from '../services/orgMembersService'
 import { useAuth } from '../context/AuthContext'
+import Modal from '../components/Modal'
 
 export default function Users() {
   const [users, setUsers] = useState<OrgMember[]>([])
@@ -14,6 +15,13 @@ export default function Users() {
   const pageSize = 10
   const hasLoadedRef = useRef(false)
   const { org, isAdmin, isOwner, loading: authLoading } = useAuth()
+  const [memberModalOpen, setMemberModalOpen] = useState(false)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [editingMember, setEditingMember] = useState<OrgMember | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<OrgMember | null>(null)
+  const [memberForm, setMemberForm] = useState({ email: '', role: 'member' })
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (authLoading) return
@@ -65,10 +73,10 @@ export default function Users() {
       <DashboardLayout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900  mb-2">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Access Restricted
             </h2>
-            <p className="text-gray-600 ">
+            <p className="text-gray-600">
               Admin access required to view users.
             </p>
           </div>
@@ -82,18 +90,31 @@ export default function Users() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 ">Users</h1>
-            <p className="mt-1 text-sm text-gray-500 ">
+            <h1 className="text-2xl font-bold text-gray-900">Users</h1>
+            <p className="mt-1 text-sm text-gray-500">
               Manage and view all users in the system
             </p>
           </div>
-          <button className="mt-4 sm:mt-0 px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors">
+          <button
+            className="mt-4 sm:mt-0 px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
+            onClick={() => {
+              setEditingMember(null)
+              setMemberForm({ email: '', role: 'member' })
+              setError(null)
+              setMemberModalOpen(true)
+            }}
+          >
             Add User
           </button>
         </div>
+        {error && (
+          <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+            {error}
+          </div>
+        )}
 
         {/* Filters */}
-        <div className="app-shell shadow rounded-lg border border-gray-200  p-4">
+        <div className="app-shell shadow rounded-lg border border-gray-200 p-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1 relative">
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -102,13 +123,13 @@ export default function Users() {
                 placeholder="Search users..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300  rounded-lg bg-white  text-gray-900  placeholder-gray-500  focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300  rounded-lg bg-white  text-gray-900  focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <option value="all">All roles</option>
               <option value="owner">Owner</option>
@@ -116,7 +137,7 @@ export default function Users() {
               <option value="manager">Manager</option>
               <option value="member">Member</option>
             </select>
-            <div className="flex items-center text-sm text-gray-500 ">
+            <div className="flex items-center text-sm text-gray-500">
               <FunnelIcon className="h-5 w-5 mr-2" />
               {filteredUsers.length} results
             </div>
@@ -124,82 +145,99 @@ export default function Users() {
         </div>
 
         {/* Users Table */}
-        <div className="app-shell shadow rounded-lg border border-gray-200  overflow-hidden">
+        <div className="app-shell shadow rounded-lg border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 ">
-              <thead className="bg-gray-50 ">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     User
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Role
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Joined
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500  uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="app-shell divide-y divide-gray-200 ">
+              <tbody className="app-shell divide-y divide-gray-200">
                 {loading ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500 ">
+                    <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
                       Loading users...
                     </td>
                   </tr>
                 ) : filteredUsers.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500 ">
+                    <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
                       No users found
                     </td>
                   </tr>
                 ) : pagedUsers.map((user) => (
-                  <tr key={`${user.org_id}-${user.user_id}`} className="hover:bg-gray-50  transition-colors">
+                  <tr key={`${user.org_id}-${user.user_id}`} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
-                          <div className="h-10 w-10 rounded-full bg-primary-100  flex items-center justify-center">
-                            <span className="text-sm font-medium text-primary-700 ">
+                          <div className="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                            <span className="text-sm font-medium text-primary-700">
                               {user.profiles?.[0]?.email?.substring(0, 2).toUpperCase() || 'U'}
                             </span>
                           </div>
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900 ">
+                          <div className="text-sm font-medium text-gray-900">
                             {user.profiles?.[0]?.email || 'Unknown'}
                           </div>
-                          <div className="text-sm text-gray-500 ">
+                          <div className="text-sm text-gray-500">
                             ID: {user.user_id.substring(0, 8)}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800  ">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                         {user.role}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
-                        className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800  "
+                        className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
                       >
                         Active
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(user.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button className="text-primary-600 hover:text-primary-900   mr-3">
+                      <button
+                        className="text-primary-600 hover:text-primary-900 mr-3"
+                        onClick={() => {
+                          setEditingMember(user)
+                          setMemberForm({
+                            email: user.profiles?.[0]?.email || '',
+                            role: user.role || 'member',
+                          })
+                          setError(null)
+                          setMemberModalOpen(true)
+                        }}
+                      >
                         Edit
                       </button>
-                      <button className="text-red-600 hover:text-red-900  ">
+                      <button
+                        className="text-red-600 hover:text-red-900"
+                        onClick={() => {
+                          setDeleteTarget(user)
+                          setDeleteModalOpen(true)
+                        }}
+                      >
                         Delete
                       </button>
                     </td>
@@ -210,20 +248,20 @@ export default function Users() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-gray-500 ">
+        <div className="flex items-center justify-between text-sm text-gray-500">
           <div>
             Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} results
           </div>
           <div className="flex items-center gap-2">
             <button
-              className="px-2 py-1 rounded border border-gray-200  disabled:opacity-50"
+              className="px-2 py-1 rounded border border-gray-200 disabled:opacity-50"
               onClick={() => setPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
             >
               Prev
             </button>
             <button
-              className="px-2 py-1 rounded border border-gray-200  disabled:opacity-50"
+              className="px-2 py-1 rounded border border-gray-200 disabled:opacity-50"
               onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
             >
@@ -232,6 +270,140 @@ export default function Users() {
           </div>
         </div>
       </div>
+
+      <Modal
+        open={memberModalOpen}
+        title={editingMember ? 'Edit user' : 'Add user'}
+        onClose={() => setMemberModalOpen(false)}
+        footer={(
+          <>
+            <button
+              onClick={() => setMemberModalOpen(false)}
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={async () => {
+                if (!org?.id) return
+                setSaving(true)
+                setError(null)
+
+                if (editingMember) {
+                  const success = await orgMembersService.updateMemberRole({
+                    org_id: org.id,
+                    user_id: editingMember.user_id,
+                    role: memberForm.role,
+                  })
+                  setSaving(false)
+                  if (!success) {
+                    setError('Failed to update user role.')
+                    return
+                  }
+                } else {
+                  if (!memberForm.email.trim()) {
+                    setSaving(false)
+                    setError('Email is required.')
+                    return
+                  }
+                  const result = await orgMembersService.addMember({
+                    org_id: org.id,
+                    email: memberForm.email.trim(),
+                    role: memberForm.role,
+                  })
+                  setSaving(false)
+                  if (!result.success) {
+                    setError(result.message || 'Failed to add user.')
+                    return
+                  }
+                }
+
+                setMemberModalOpen(false)
+                await loadUsers(true)
+              }}
+              className="inline-flex items-center px-4 py-2 rounded-md bg-primary-600 text-white text-sm font-medium hover:bg-primary-700"
+              disabled={saving}
+            >
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+          </>
+        )}
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              value={memberForm.email}
+              onChange={(e) => setMemberForm({ ...memberForm, email: e.target.value })}
+              placeholder="user@company.com"
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
+              disabled={Boolean(editingMember)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Role</label>
+            <select
+              value={memberForm.role}
+              onChange={(e) => setMemberForm({ ...memberForm, role: e.target.value })}
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
+            >
+              <option value="owner">Owner</option>
+              <option value="admin">Admin</option>
+              <option value="manager">Manager</option>
+              <option value="member">Member</option>
+            </select>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        open={deleteModalOpen}
+        title="Remove user"
+        onClose={() => setDeleteModalOpen(false)}
+        footer={(
+          <>
+            <button
+              onClick={() => setDeleteModalOpen(false)}
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={async () => {
+                if (!org?.id || !deleteTarget) return
+                setSaving(true)
+                setError(null)
+                const success = await orgMembersService.deleteMember({
+                  org_id: org.id,
+                  user_id: deleteTarget.user_id,
+                })
+                setSaving(false)
+                if (!success) {
+                  setError('Failed to remove user.')
+                  return
+                }
+                setDeleteModalOpen(false)
+                setDeleteTarget(null)
+                await loadUsers(true)
+              }}
+              className="inline-flex items-center px-4 py-2 rounded-md bg-red-600 text-white text-sm font-medium hover:bg-red-700"
+              disabled={saving}
+            >
+              {saving ? 'Removing...' : 'Remove'}
+            </button>
+          </>
+        )}
+      >
+        <div className="space-y-2 text-sm text-gray-600">
+          <p>
+            Are you sure you want to remove this user from the organization?
+          </p>
+          <p className="text-gray-900 font-medium">
+            {deleteTarget?.profiles?.[0]?.email || deleteTarget?.user_id}
+          </p>
+        </div>
+      </Modal>
     </DashboardLayout>
   )
 }

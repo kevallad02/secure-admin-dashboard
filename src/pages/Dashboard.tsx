@@ -90,25 +90,25 @@ export default function Dashboard() {
           {statsData.map((stat) => (
             <div
               key={stat.name}
-              className="app-shell overflow-hidden shadow rounded-lg border border-gray-200 "
+              className="app-shell overflow-hidden shadow rounded-lg border border-gray-200"
             >
               <div className="p-5">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="p-3 bg-primary-50  rounded-lg">
-                      <stat.icon className="h-6 w-6 text-primary-600 " />
+                    <div className="p-3 bg-primary-50 rounded-lg">
+                      <stat.icon className="h-6 w-6 text-primary-600" />
                     </div>
                   </div>
                   <div className="ml-5 w-0 flex-1">
                     <dl>
-                      <dt className="text-sm font-medium text-gray-500  truncate">
+                      <dt className="text-sm font-medium text-gray-500 truncate">
                         {stat.name}
                       </dt>
                       <dd className="flex items-baseline">
-                        <div className="text-2xl font-semibold text-gray-900 ">
+                        <div className="text-2xl font-semibold text-gray-900">
                           {stat.value}
                         </div>
-                        <div className="ml-2 flex items-baseline text-sm font-semibold text-green-600 ">
+                        <div className="ml-2 flex items-baseline text-sm font-semibold text-green-600">
                           {stat.change}
                         </div>
                       </dd>
@@ -123,81 +123,81 @@ export default function Dashboard() {
         {/* Recent Activity */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Recent Users */}
-          <div className="app-shell shadow rounded-lg border border-gray-200 ">
+          <div className="app-shell shadow rounded-lg border border-gray-200">
             <div className="px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 ">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
                 Recent Users
               </h3>
               <div className="mt-5 space-y-4">
                 {loading ? (
-                  <p className="text-sm text-gray-500 ">Loading...</p>
+                  <p className="text-sm text-gray-500">Loading...</p>
                 ) : recentUsers.length > 0 ? (
                   recentUsers.map((user, index) => (
                     <div key={index} className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <div className="flex-shrink-0">
-                          <div className="h-10 w-10 rounded-full bg-primary-100  flex items-center justify-center">
-                            <span className="text-sm font-medium text-primary-700 ">
+                          <div className="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                            <span className="text-sm font-medium text-primary-700">
                               {user.profiles?.email?.substring(0, 2).toUpperCase() || 'U'}
                             </span>
                           </div>
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900  truncate">
+                          <p className="text-sm font-medium text-gray-900 truncate">
                             {user.profiles?.email || 'Unknown'}
                           </p>
-                          <p className="text-sm text-gray-500  truncate">
+                          <p className="text-sm text-gray-500 truncate">
                             {user.role}
                           </p>
                         </div>
                       </div>
                       <div className="text-right">
                         <span
-                          className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800  "
+                          className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"
                         >
                           Active
                         </span>
-                        <p className="text-xs text-gray-500  mt-1">
+                        <p className="text-xs text-gray-500 mt-1">
                           {new Date(user.created_at).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-500 ">No users found</p>
+                  <p className="text-sm text-gray-500">No users found</p>
                 )}
               </div>
             </div>
           </div>
 
           {/* Activity Log */}
-          <div className="app-shell shadow rounded-lg border border-gray-200 ">
+          <div className="app-shell shadow rounded-lg border border-gray-200">
             <div className="px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 ">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
                 Activity Log
               </h3>
               <div className="mt-5 space-y-4">
                 {loading ? (
-                  <p className="text-sm text-gray-500 ">Loading...</p>
+                  <p className="text-sm text-gray-500">Loading...</p>
                 ) : recentLogs.length > 0 ? (
                   recentLogs.map((log, index) => (
                     <div key={index} className="flex items-start space-x-3">
                       <div className="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-blue-500"></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 ">
+                        <p className="text-sm font-medium text-gray-900">
                           {log.action}
                         </p>
-                        <p className="text-sm text-gray-500 ">
+                        <p className="text-sm text-gray-500">
                           {log.ip_address}
                         </p>
-                        <p className="text-xs text-gray-400  mt-1">
+                        <p className="text-xs text-gray-400 mt-1">
                           {new Date(log.created_at).toLocaleString()}
                         </p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-500 ">No activity logs</p>
+                  <p className="text-sm text-gray-500">No activity logs</p>
                 )}
               </div>
             </div>

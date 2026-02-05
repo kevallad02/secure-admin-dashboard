@@ -5,6 +5,7 @@ export interface OrgSummary {
   id: string
   name: string
   onboarding_completed_at: string | null
+  brand_color?: string | null
 }
 
 export interface OrgSettings {
@@ -23,10 +24,10 @@ export interface OrgSettings {
 }
 
 export const orgService = {
-  async getOrganization(orgId: string): Promise<{ id: string; name: string; plan: string; created_at: string } | null> {
+  async getOrganization(orgId: string): Promise<{ id: string; name: string; plan: string; created_at: string; brand_color: string | null } | null> {
     const { data, error } = await supabase
       .from('organizations')
-      .select('id, name, plan, created_at')
+      .select('id, name, plan, created_at, brand_color')
       .eq('id', orgId)
       .single()
 
@@ -37,10 +38,10 @@ export const orgService = {
     return data
   },
 
-  async updateOrganization(payload: { id: string; name: string }): Promise<boolean> {
+  async updateOrganization(payload: { id: string; name: string; brand_color?: string | null }): Promise<boolean> {
     const { error } = await supabase
       .from('organizations')
-      .update({ name: payload.name })
+      .update({ name: payload.name, brand_color: payload.brand_color || null })
       .eq('id', payload.id)
 
     if (error) {
@@ -67,7 +68,7 @@ export const orgService = {
   async getPrimaryOrgForUser(userId: string): Promise<OrgSummary | null> {
     const { data, error } = await supabase
       .from('org_members')
-      .select('org_id, organizations ( id, name, onboarding_completed_at )')
+      .select('org_id, organizations ( id, name, onboarding_completed_at, brand_color )')
       .eq('user_id', userId)
       .order('created_at', { ascending: true })
       .limit(1)
@@ -85,6 +86,7 @@ export const orgService = {
       id: org.id,
       name: org.name,
       onboarding_completed_at: org.onboarding_completed_at ?? null,
+      brand_color: org.brand_color ?? null,
     } : null
   },
 

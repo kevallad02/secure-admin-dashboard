@@ -100,8 +100,8 @@ export const rentalsService = {
   async getEvents(orgId: string): Promise<RentalEvent[]> {
     const { data, error } = await supabase
       .from('rental_events')
-      .select('id, contract_id, asset_id, event_type, event_date, notes')
-      .eq('org_id', orgId)
+      .select('id, contract_id, asset_id, event_type, event_date, notes, rental_contracts!inner(org_id)')
+      .eq('rental_contracts.org_id', orgId)
       .order('event_date', { ascending: false })
 
     if (error) {

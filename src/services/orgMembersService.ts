@@ -13,6 +13,57 @@ export interface OrgMember {
 }
 
 export const orgMembersService = {
+  async findProfileByEmail(email: string): Promise<{ id: string; email: string } | null> {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, email')
+      .eq('email', email)
+      .maybeSingle()
+
+    if (error) {
+      console.error('Error finding profile by email:', error)
+      return null
+    }
+    return data || null
+  },
+
+  async addMember(payload: { org_id: string; email: string; role: string }): Promise<{ success: boolean; message?: string }> {
+    const profile = await this.findProfileByEmail(payload.email)
+    if (!profile) {
+      return { success: false, message: 'User not found. Ask them to sign up first.' }
+    }
+
+    const { error } = await supabase
+      .from('org_members')
+      .insert({
+        org_id: payload.org_id,
+        user_id: profile.id,
+        role: payload.role,
+      })
+
+    if (error) {
+      console.error('Error adding org member:', error)
+      return { success: false, message: 'Could not add user. They may already be a member.' }
+    }
+    await activityLogService.createLog('Added org member')
+    return { success: true }
+  },
+
+  async deleteMember(payload: { org_id: string; user_id: string }): Promise<boolean> {
+    const { error } = await supabase
+      .from('org_members')
+      .delete()
+      .eq('org_id', payload.org_id)
+      .eq('user_id', payload.user_id)
+
+    if (error) {
+      console.error('Error deleting org member:', error)
+      return false
+    }
+    await activityLogService.createLog('Removed org member')
+    return true
+  },
+
   async getOrgMembersPaged(orgId: string, page: number, pageSize: number): Promise<{ data: OrgMember[]; count: number }> {
     const from = (page - 1) * pageSize
     const to = from + pageSize - 1

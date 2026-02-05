@@ -383,11 +383,7 @@ export default function Inventory() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-3 py-2 rounded-md text-sm font-medium border ${
-                activeTab === tab.id
-                  ? 'bg-primary-600 text-white border-primary-600'
-                  : 'bg-white  text-gray-700  border-gray-200 '
-              }`}
+              className={`px-3 py-2 rounded-md text-sm font-medium border ${ activeTab === tab.id ? 'bg-primary-600 text-white border-primary-600' : 'bg-white text-gray-700 border-gray-200 ' }`}
             >
               {tab.label}
             </button>
@@ -400,13 +396,13 @@ export default function Inventory() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search..."
-            className="w-full sm:w-64 rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+            className="w-full sm:w-64 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
           />
           {activeTab === 'products' && (
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             >
               <option value="all">All types</option>
               <option value="stock">Stock</option>
@@ -428,44 +424,44 @@ export default function Inventory() {
         />
 
         {activeTab === 'transfers' && selectedTransfer && (
-          <div className="app-shell shadow rounded-lg border border-gray-200  p-6">
-            <h3 className="text-lg font-medium text-gray-900 ">
+          <div className="app-shell shadow rounded-lg border border-gray-200 p-6">
+            <h3 className="text-lg font-medium text-gray-900">
               Transfer Details
             </h3>
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <p className="text-xs text-gray-500 ">Product</p>
-                <p className="text-sm font-medium text-gray-900 ">
+                <p className="text-xs text-gray-500">Product</p>
+                <p className="text-sm font-medium text-gray-900">
                   {selectedTransfer.product_name || 'Unknown'}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 ">Reference</p>
-                <p className="text-sm font-medium text-gray-900 ">
+                <p className="text-xs text-gray-500">Reference</p>
+                <p className="text-sm font-medium text-gray-900">
                   {String(selectedTransfer.id).slice(0, 8)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 ">From</p>
-                <p className="text-sm font-medium text-gray-900 ">
+                <p className="text-xs text-gray-500">From</p>
+                <p className="text-sm font-medium text-gray-900">
                   {selectedTransfer.from_location || '—'}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 ">To</p>
-                <p className="text-sm font-medium text-gray-900 ">
+                <p className="text-xs text-gray-500">To</p>
+                <p className="text-sm font-medium text-gray-900">
                   {selectedTransfer.to_location || '—'}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 ">Quantity</p>
-                <p className="text-sm font-medium text-gray-900 ">
+                <p className="text-xs text-gray-500">Quantity</p>
+                <p className="text-sm font-medium text-gray-900">
                   {selectedTransfer.qty}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 ">Date</p>
-                <p className="text-sm font-medium text-gray-900 ">
+                <p className="text-xs text-gray-500">Date</p>
+                <p className="text-sm font-medium text-gray-900">
                   {new Date(selectedTransfer.created_at).toLocaleString()}
                 </p>
               </div>
@@ -482,7 +478,7 @@ export default function Inventory() {
           <>
             <button
               onClick={() => setProductModalOpen(false)}
-              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
             >
               Cancel
             </button>
@@ -497,30 +493,30 @@ export default function Inventory() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Name</label>
+            <label className="block text-sm font-medium text-gray-700">Name</label>
             <input
               type="text"
               value={productForm.name}
               onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">SKU</label>
+            <label className="block text-sm font-medium text-gray-700">SKU</label>
             <input
               type="text"
               value={productForm.sku}
               onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             />
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 ">Type</label>
+              <label className="block text-sm font-medium text-gray-700">Type</label>
               <select
                 value={productForm.type}
                 onChange={(e) => setProductForm({ ...productForm, type: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
               >
                 <option value="stock">Stock</option>
                 <option value="serialized">Serialized</option>
@@ -530,11 +526,11 @@ export default function Inventory() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 ">Unit</label>
+              <label className="block text-sm font-medium text-gray-700">Unit</label>
               <select
                 value={productForm.unit_id}
                 onChange={(e) => setProductForm({ ...productForm, unit_id: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
               >
                 <option value="">None</option>
                 {units.map((unit) => (
@@ -545,11 +541,11 @@ export default function Inventory() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 ">Category</label>
+              <label className="block text-sm font-medium text-gray-700">Category</label>
               <select
                 value={productForm.category_id}
                 onChange={(e) => setProductForm({ ...productForm, category_id: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
               >
                 <option value="">None</option>
                 {categories.map((cat) => (
@@ -558,7 +554,7 @@ export default function Inventory() {
               </select>
             </div>
             <div className="flex items-end">
-              <label className="inline-flex items-center text-sm text-gray-700 ">
+              <label className="inline-flex items-center text-sm text-gray-700">
                 <input
                   type="checkbox"
                   checked={productForm.is_active}
@@ -580,7 +576,7 @@ export default function Inventory() {
           <>
             <button
               onClick={() => setLocationModalOpen(false)}
-              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
             >
               Cancel
             </button>
@@ -595,20 +591,20 @@ export default function Inventory() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Name</label>
+            <label className="block text-sm font-medium text-gray-700">Name</label>
             <input
               type="text"
               value={locationForm.name}
               onChange={(e) => setLocationForm({ ...locationForm, name: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Type</label>
+            <label className="block text-sm font-medium text-gray-700">Type</label>
             <select
               value={locationForm.type}
               onChange={(e) => setLocationForm({ ...locationForm, type: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             >
               <option value="warehouse">Warehouse</option>
               <option value="store">Store</option>
@@ -627,7 +623,7 @@ export default function Inventory() {
           <>
             <button
               onClick={() => setTransferModalOpen(false)}
-              className="text-sm font-medium text-gray-600  hover:text-gray-900 "
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
             >
               Cancel
             </button>
@@ -642,11 +638,11 @@ export default function Inventory() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Product</label>
+            <label className="block text-sm font-medium text-gray-700">Product</label>
             <select
               value={transferForm.product_id}
               onChange={(e) => setTransferForm({ ...transferForm, product_id: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             >
               <option value="">Select product</option>
               {products.map((product) => (
@@ -656,11 +652,11 @@ export default function Inventory() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 ">From</label>
+              <label className="block text-sm font-medium text-gray-700">From</label>
               <select
                 value={transferForm.from_location_id}
                 onChange={(e) => setTransferForm({ ...transferForm, from_location_id: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
               >
                 <option value="">Select location</option>
                 {locations.map((location) => (
@@ -668,17 +664,17 @@ export default function Inventory() {
                 ))}
               </select>
               {availableQty !== null && (
-                <p className="mt-1 text-xs text-gray-500 ">
+                <p className="mt-1 text-xs text-gray-500">
                   Available: {availableQty}
                 </p>
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 ">To</label>
+              <label className="block text-sm font-medium text-gray-700">To</label>
               <select
                 value={transferForm.to_location_id}
                 onChange={(e) => setTransferForm({ ...transferForm, to_location_id: e.target.value })}
-                className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+                className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
               >
                 <option value="">Select location</option>
                 {locations.map((location) => (
@@ -688,18 +684,18 @@ export default function Inventory() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 ">Quantity</label>
+            <label className="block text-sm font-medium text-gray-700">Quantity</label>
             <input
               type="number"
               min="1"
               value={transferForm.qty}
               onChange={(e) => setTransferForm({ ...transferForm, qty: Number(e.target.value) })}
-              className="mt-1 w-full rounded-md border border-gray-300  bg-white  px-3 py-2 text-sm text-gray-900 "
+              className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
             />
           </div>
           {transferError && (
-            <div className="rounded-md bg-red-50  p-3">
-              <p className="text-sm text-red-800 ">{transferError}</p>
+            <div className="rounded-md bg-red-50 p-3">
+              <p className="text-sm text-red-800">{transferError}</p>
             </div>
           )}
         </div>
