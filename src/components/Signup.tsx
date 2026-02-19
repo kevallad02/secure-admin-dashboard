@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
 import { activityLogService } from '../services/activityLogService'
+import logo from '../assets/logo.png'
 
 export default function Signup() {
   const navigate = useNavigate()
@@ -87,6 +88,13 @@ export default function Signup() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
+          <div className="flex justify-center">
+            <img
+              src={logo}
+              alt="Multi-Tenant logo"
+              className="h-auto w-full max-w-[220px] sm:max-w-[260px]"
+            />
+          </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Create your account
           </h2>
